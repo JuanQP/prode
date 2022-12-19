@@ -33,6 +33,7 @@ services:
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=postgres
       - DATABASE_PORT=
+      - PYTHONUNBUFFERED=1
 
   postgres:
     container_name: prode-db
