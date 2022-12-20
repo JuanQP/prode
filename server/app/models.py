@@ -6,6 +6,7 @@ from django.utils import timezone
 # Create your models here.
 class CustomUser(AbstractUser):
   avatar = models.CharField(max_length=255, blank=True, default='')
+  email = models.EmailField(max_length=255, unique=True)
 
 class Team(models.Model):
   """
@@ -35,6 +36,7 @@ class League(models.Model):
   Leagues can be private (a user needs to ask for permission to participate)
   or can be public (everyone can participate).
   """
+  owner = models.ForeignKey(CustomUser, related_name='leagues', on_delete=models.CASCADE, default=1)
   competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
   participants = models.ManyToManyField(CustomUser, through='Participant')
   name = models.CharField(max_length=100)
@@ -146,3 +148,11 @@ class Prediction(models.Model):
       return f"{team_a} - {team_b}"
 
     return f"{team_a} {score_a} - {team_b} {score_b}"
+
+class JoinRequest(models.Model):
+  user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+  league = models.ForeignKey(League, on_delete=models.CASCADE)
+  accepted = models.BooleanField(blank=True, null=True, default=None)
+
+  def __str__(self) -> str:
+    return f"{self.user.username} -> {self.league.name} league"

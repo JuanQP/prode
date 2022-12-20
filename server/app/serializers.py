@@ -40,11 +40,12 @@ class LeagueCreateUpdateSerializer(serializers.ModelSerializer):
 class LeagueSerializer(serializers.ModelSerializer):
   competition = serializers.PrimaryKeyRelatedField(read_only=True, many=False)
   competition_name = serializers.StringRelatedField(read_only=True, source='competition.name')
+  owner_username = serializers.StringRelatedField(read_only=True, source='owner.username')
 
   class Meta:
     model = models.League
-    fields = ['id', 'name', 'is_public', 'competition', 'competition_name']
-    read_only_fields = ['id', 'name', 'is_public', 'competition_name']
+    fields = ['id', 'name', 'is_public', 'competition', 'competition_name', 'owner_username']
+    read_only_fields = ['id', 'name', 'is_public', 'competition_name', 'owner_username']
 
 class ParticipantSerializer(serializers.ModelSerializer):
   league = LeagueSerializer(read_only=True)
@@ -161,3 +162,33 @@ class RegisterSerializer(serializers.ModelSerializer):
     user.save()
 
     return user
+
+
+class JoinRequestSerializer(serializers.ModelSerializer):
+  user = serializers.PrimaryKeyRelatedField(many=False, queryset=models.CustomUser.objects.all())
+  league = serializers.PrimaryKeyRelatedField(many=False, queryset=models.League.objects.all())
+  class Meta:
+    model = models.JoinRequest
+    fields = [
+      'id',
+      'user',
+      'league',
+      'accepted',
+    ]
+
+class JoinRequestCreateSerializer(serializers.ModelSerializer):
+  league = serializers.PrimaryKeyRelatedField(many=False, queryset=models.League.objects.all())
+  class Meta:
+    model = models.JoinRequest
+    fields = [
+      'id',
+      'league',
+    ]
+
+class JoinRequestUpdateSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = models.JoinRequest
+    fields = [
+      'id',
+      'accepted'
+    ]
