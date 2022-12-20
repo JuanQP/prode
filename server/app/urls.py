@@ -11,7 +11,7 @@ apiRouter.register(r'matches', views.MatchViewSet, basename='match')
 apiRouter.register(r'leagues', views.LeagueViewSet, basename='league')
 apiRouter.register(r'participants', views.ParticipantViewSet, basename='participant')
 apiRouter.register(r'predictions', views.PredictionViewSet, basename='prediction')
-apiRouter.register(r'join-requests', views.JoinRequest, basename='join-request')
+apiRouter.register(r'join-requests', views.JoinRequestViewSet, basename='join-request')
 
 urlpatterns = [
     path('hello-world/', views.hello_world),

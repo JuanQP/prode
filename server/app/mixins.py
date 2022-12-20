@@ -1,4 +1,4 @@
-from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 
 class PublicListAndRetrieveAdminEverythingElse():
