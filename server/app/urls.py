@@ -15,7 +15,7 @@ apiRouter.register(r'join-requests', views.JoinRequest, basename='join-request')
 
 urlpatterns = [
     path('hello-world/', views.hello_world),
-    path('token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/', views.EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('logged/', views.Authenticated.as_view()),
     path('admin/', views.AdminAuthenticated.as_view()),

@@ -5,6 +5,9 @@ from django.utils import timezone
 
 # Create your models here.
 class CustomUser(AbstractUser):
+  USERNAME_FIELD = 'email'
+  EMAIL_FIELD = 'email'
+  REQUIRED_FIELDS = ['username']
   avatar = models.CharField(max_length=255, blank=True, default='')
   email = models.EmailField(max_length=255, unique=True)
 

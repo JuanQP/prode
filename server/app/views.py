@@ -5,11 +5,16 @@ from rest_framework.exceptions import APIException, PermissionDenied
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from app import exceptions as app_exceptions
 from app import mixins as appMixins
 from app import models, serializers
 
+
+# DRF SimpleJWT Login
+class EmailTokenObtainPairView(TokenObtainPairView):
+    serializer_class = serializers.EmailTokenObtainSerializer
 
 @api_view(['GET'])
 def hello_world(request):

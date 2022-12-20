@@ -1,6 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from app import models
 
@@ -192,3 +194,9 @@ class JoinRequestUpdateSerializer(serializers.ModelSerializer):
       'id',
       'accepted'
     ]
+
+
+# DRF Simple JWT Login with Email
+# https://stackoverflow.com/a/67256983/4792093
+class EmailTokenObtainSerializer(TokenObtainPairSerializer):
+    username_field = get_user_model().EMAIL_FIELD
