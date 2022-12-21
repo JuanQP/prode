@@ -5,6 +5,8 @@ import { Login } from "@pages/Login";
 import { Register } from "@pages/Register";
 import { RegisterOk } from "@pages/RegisterOk";
 import { createBrowserRouter } from "react-router-dom";
+import { CompetitionDetail } from "./pages/CompetitionDetail";
+import { Competitions } from "./pages/Competitions";
 
 export const router = createBrowserRouter([
   // App Layout routes
@@ -14,7 +16,15 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />,
-      }
+      },
+      {
+        path: '/competitions',
+        element: <Competitions />,
+      },
+      {
+        path: '/competitions/:id',
+        element: <CompetitionDetail />,
+      },
     ]
   },
   // Login Layout routes

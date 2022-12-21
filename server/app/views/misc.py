@@ -47,6 +47,11 @@ class CompetitionViewSet(
     queryset = models.Competition.objects.all()
     serializer_class = serializers.CompetitionSerializer
 
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return serializers.CompetitionDetailSerializer
+        return super().get_serializer_class()
+
 class TeamViewSet(
     appMixins.PublicListAndRetrieveAdminEverythingElse,
     viewsets.ModelViewSet,

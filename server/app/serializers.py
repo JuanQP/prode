@@ -101,6 +101,14 @@ class MatchSerializer(serializers.ModelSerializer):
 
     return attrs
 
+class CompetitionDetailSerializer(serializers.ModelSerializer):
+  matches = MatchSerializer(source='match_set', many=True)
+  leagues = LeagueSerializer(source='league_set', many=True)
+  class Meta:
+    depth = 1
+    model = models.Competition
+    fields = ['id', 'name', 'leagues', 'matches']
+
 class PredictionSerializer(serializers.ModelSerializer):
   match = MatchSerializer(read_only=True)
   participant = ParticipantSerializer(read_only=True)
