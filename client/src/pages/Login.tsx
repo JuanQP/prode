@@ -1,18 +1,20 @@
 import * as api from '@/helpers/api';
 import { LoginData, LoginForm } from "@features/UI/LoginForm";
-import { Card, Title } from "@mantine/core";
+import { Button, Card, Group, Title } from "@mantine/core";
+import { useMutation } from '@tanstack/react-query';
 import axios from "axios";
 import { useIsAuthenticated, useSignIn } from "react-auth-kit";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 export function Login() {
   const signIn = useSignIn()
   const navigate = useNavigate()
   const isAuth = useIsAuthenticated()
+  const mutation = useMutation({ mutationFn: api.login })
 
   async function handleLoginSubmit(credentials: LoginData) {
     try {
-      const response = await api.login(credentials)
+      const response = await mutation.mutateAsync(credentials)
       signIn({
         token: response.access,
         refreshToken: response.refresh,
@@ -24,7 +26,7 @@ export function Login() {
       axios.defaults.headers.common['Authorization'] = `Bearer ${response.access}`
       navigate('/')
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -33,9 +35,17 @@ export function Login() {
   }
 
   return (
-    <Card shadow="sm" sx={{ width: '100%' }}>
+    <Card p="lg" shadow="sm" sx={{ width: '100%' }}>
       <Title>Ingresar</Title>
-      <LoginForm onSubmit={handleLoginSubmit}/>
+      <LoginForm loading={mutation.isLoading} onSubmit={handleLoginSubmit}/>
+      <Group grow mt="sm">
+        <Button component={Link} variant='subtle' to="/">
+          Volver a la página
+        </Button>
+        <Button component={Link} variant='subtle' to="/register">
+          Crear cuenta
+        </Button>
+      </Group>
     </Card>
   )
 }

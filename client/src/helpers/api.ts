@@ -1,3 +1,4 @@
+import { RegisterData } from "@/features/UI/RegisterForm";
 import { LoginData } from "@features/UI/LoginForm";
 import axios from "axios";
 import { createRefresh } from "react-auth-kit";
@@ -5,6 +6,14 @@ import { createRefresh } from "react-auth-kit";
 interface LoginResponse {
   refresh: string;
   access: string;
+}
+
+interface RegisterResponse {
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  avatar: string;
 }
 
 interface RefreshTokenResponse {
@@ -33,5 +42,10 @@ async function refreshToken(refreshToken: string) {
 
 export async function login(credentials: LoginData) {
   const response = await axios.post<LoginResponse>('/api/token/', credentials)
+  return response.data
+}
+
+export async function register(values: RegisterData) {
+  const response = await axios.post<RegisterResponse>('/api/register/', values)
   return response.data
 }

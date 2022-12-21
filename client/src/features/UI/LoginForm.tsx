@@ -12,6 +12,7 @@ const schema = z.object({
 export type LoginData = z.infer<typeof schema>
 
 interface Props {
+  loading: boolean;
   onSubmit: (credentials: LoginData) => void;
 }
 
@@ -40,7 +41,7 @@ export function LoginForm(props: Props) {
           error={errors.password?.message}
           {...register('password')}
         />
-        <Button type="submit" leftIcon={<IconLogin />}>Ingresar</Button>
+        <Button loading={props.loading} type="submit" leftIcon={<IconLogin />}>Ingresar</Button>
       </Stack>
     </Box>
   )
