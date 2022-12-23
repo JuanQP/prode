@@ -207,4 +207,11 @@ class JoinRequestUpdateSerializer(serializers.ModelSerializer):
 # DRF Simple JWT Login with Email
 # https://stackoverflow.com/a/67256983/4792093
 class EmailTokenObtainSerializer(TokenObtainPairSerializer):
-    username_field = get_user_model().EMAIL_FIELD
+  username_field = get_user_model().EMAIL_FIELD
+
+  @classmethod
+  def get_token(cls, user):
+    token = super().get_token(user)
+    token['user'] = UserSerializer(user).data
+
+    return token

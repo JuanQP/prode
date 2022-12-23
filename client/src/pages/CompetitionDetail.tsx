@@ -27,13 +27,13 @@ export function CompetitionDetail() {
   return (
     <>
       <Center sx={centerStyle}>
-        <Title align="center" fw="lighter">{competition.name}</Title>
+        <Title align="center">{competition.name}</Title>
       </Center>
       <Container px={0}>
         <Stack>
-          <Title align="center" fw="lighter" order={2}>Partidos</Title>
+          <Title align="center" order={2}>Partidos</Title>
           <MatchList matches={competition.matches} />
-          <Title align="center" fw="lighter" order={2}>Ligas</Title>
+          <Title align="center" order={2}>Ligas</Title>
           <LeagueList leagues={competition.leagues} />
         </Stack>
       </Container>

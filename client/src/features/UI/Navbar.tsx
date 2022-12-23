@@ -1,7 +1,7 @@
-import { navbarLinks } from "@/helpers/links";
-import { Anchor, Box, Burger, Container, Group, Sx } from "@mantine/core";
+import { navbarLinks, navigationLinks } from "@/helpers/links";
+import { Anchor, Box, Burger, Container, Group, MediaQuery, Sx } from "@mantine/core";
 import { useState } from "react";
-import { useIsAuthenticated, useSignOut } from "react-auth-kit";
+import { useIsAuthenticated } from "react-auth-kit";
 import { Link } from "react-router-dom";
 import { NavigationDrawer } from "./NavigationDrawer";
 
@@ -13,18 +13,10 @@ export function Navbar() {
 
   const [drawerOpened, setDrawerOpened] = useState(false)
   const isAuth = useIsAuthenticated()
-  const signOut = useSignOut()
 
   const LoginButton = (
     <Anchor variant="text" ml="auto" mr="sm" component={Link} to="/login">Login</Anchor>
   )
-  const LogoutButton = (
-    <Anchor variant="text" ml="auto" mr="sm" onClick={handleLogout}>Logout</Anchor>
-  )
-
-  function handleLogout() {
-    signOut()
-  }
 
   return (
     <Box p="xs" sx={boxStyle}>
@@ -35,10 +27,17 @@ export function Navbar() {
       />
       <Container sx={{ width: '100%' }} display="flex">
         <Group sx={{ width: '100%' }}>
-          {navbarLinks.map(link => (
-            <Anchor key={link.label} variant="text" component={Link} to={link.to}>{link.label}</Anchor>
-          ))}
-          {isAuth() ? LogoutButton : LoginButton}
+          <Anchor key={navbarLinks[0].label} variant="text" component={Link} to={navbarLinks[0].to}>
+            {navbarLinks[0].label}
+          </Anchor>
+          <MediaQuery smallerThan="md" styles={{ display: 'none' }}>
+            <Box>
+              {navigationLinks.map(link => (
+                <Anchor key={link.label} variant="text" component={Link} to={link.to}>{link.label}</Anchor>
+              ))}
+            </Box>
+          </MediaQuery>
+          {isAuth() ? null : LoginButton}
         </Group>
         <Burger
           opened={drawerOpened}

@@ -1,4 +1,4 @@
-import { Badge, ScrollArea, Table } from "@mantine/core";
+import { Badge, ScrollArea, Sx, Table } from "@mantine/core";
 
 interface Props {
   leagues: League[];
@@ -8,11 +8,39 @@ const tdStyle: React.CSSProperties = {
   textAlign: 'center',
 }
 
+const tableStyles: Sx = (theme) => ({
+  boxShadow: '4px 4px black',
+  borderColor: 'black',
+  borderWidth: 2,
+  borderStyle: 'solid',
+  minWidth: 'max-content',
+  '& thead > tr > th': {
+    backgroundColor: theme.colors.cyan[2],
+    color: 'black',
+    fontWeight: 'bold',
+    borderColor: 'black',
+    borderWidth: 2,
+  },
+  '& tbody > tr > td': {
+    borderColor: 'black',
+    borderWidth: 2,
+  },
+})
+
+const scrollAreaStyles = {
+  root: {
+    height: '100%',
+  },
+  viewport: {
+    padding: 8,
+  }
+}
+
 export function LeagueList(props: Props) {
 
   return (
-    <ScrollArea style={{ width: '100%', height: '100%' }}>
-      <Table striped sx={{ minWidth: 'max-content' }}>
+    <ScrollArea styles={scrollAreaStyles}>
+      <Table withColumnBorders sx={tableStyles}>
         <thead>
           <tr>
             <th style={tdStyle}>Nombre</th>

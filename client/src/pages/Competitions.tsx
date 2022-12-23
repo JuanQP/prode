@@ -12,9 +12,9 @@ export function Competitions() {
   })
 
   return (
-    <Container>
+    <Container pt="md">
       <Title>Competiciones</Title>
-      <Text my="md">Estas son las competiciones que existen ahora mismo 👇</Text>
+      <Text my="md">Competiciones en curso 👇</Text>
       {isLoading ? <Loader /> : <CompetitionList competitions={competitions} />}
     </Container>
   )

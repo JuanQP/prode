@@ -44,3 +44,25 @@ type CompetitionDetail = {
   leagues: League[];
   matches: Match[];
 }
+
+type User = {
+  id: number;
+  username: string;
+  avatar: string;
+}
+
+type Participant = {
+  id: number;
+  score: number;
+  user: User;
+  league: League;
+}
+
+type DecodedJWT = {
+  token_type: string;
+  exp: number;
+  iat: number;
+  jti: string;
+  user_id: number;
+  user: User;
+}
