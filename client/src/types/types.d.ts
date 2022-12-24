@@ -14,6 +14,10 @@ type League = {
   owner_username: string;
 }
 
+type LeagueDetail = League & {
+  participants: Participant[];
+}
+
 type Team = {
   id: number;
   name: string;

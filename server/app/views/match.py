@@ -16,16 +16,12 @@ class MatchViewSet(
     """
     queryset = models.Match.objects.all()
     serializer_class = serializers.MatchSerializer
+    public_actions = ['list', 'retrieve', 'next_matches']
 
     def get_serializer_class(self):
         if self.action == 'finish':
             return serializers.FinishMatchSerializer
         return super().get_serializer_class()
-
-    def get_permissions(self):
-        if self.action in ['next_matches']:
-            return []
-        return super().get_permissions()
 
     @action(detail=False, methods=['get'])
     def next_matches(self, request):

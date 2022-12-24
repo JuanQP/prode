@@ -46,6 +46,7 @@ class CompetitionViewSet(
     """
     queryset = models.Competition.objects.all()
     serializer_class = serializers.CompetitionSerializer
+    public_actions = ['list', 'retrieve']
 
     def get_serializer_class(self):
         if self.action == 'retrieve':

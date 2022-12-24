@@ -7,6 +7,7 @@ import { RegisterOk } from "@pages/RegisterOk";
 import { createBrowserRouter } from "react-router-dom";
 import { CompetitionDetail } from "./pages/CompetitionDetail";
 import { Competitions } from "./pages/Competitions";
+import { LeagueDetail } from "./pages/LeagueDetail";
 
 export const router = createBrowserRouter([
   // App Layout routes
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: '/competitions/:id',
         element: <CompetitionDetail />,
+      },
+      {
+        path: '/leagues/:id',
+        element: <LeagueDetail />,
       },
     ]
   },

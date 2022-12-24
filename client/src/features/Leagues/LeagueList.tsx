@@ -1,4 +1,5 @@
-import { Badge, ScrollArea, Sx, Table } from "@mantine/core";
+import { Anchor, Badge, ScrollArea, Sx, Table } from "@mantine/core";
+import { Link } from "react-router-dom";
 
 interface Props {
   leagues: League[];
@@ -51,7 +52,11 @@ export function LeagueList(props: Props) {
         <tbody>
           {props.leagues.map(league => (
             <tr key={league.id}>
-              <td style={tdStyle}>{league.name}</td>
+              <td style={tdStyle}>
+                <Anchor underline component={Link} to={`/leagues/${league.id}/`}>
+                  {league.name}
+                </Anchor>
+              </td>
               <td style={tdStyle}>{league.owner_username}</td>
               <td style={tdStyle}>
                 <Badge variant="filled" color={league.is_public ? 'green' : 'gray'}>

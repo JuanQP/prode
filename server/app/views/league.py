@@ -20,7 +20,9 @@ class LeagueViewSet(
     def get_serializer_class(self):
         if self.action == 'add_prediction':
             return serializers.PredictionCreateSerializer
-        if self.action in ['create', 'update', 'partial_update']:
+        elif self.action == 'retrieve':
+            return serializers.LeagueDetailSerializer
+        elif self.action in ['create', 'update', 'partial_update']:
             return serializers.LeagueCreateUpdateSerializer
         return super().get_serializer_class()
 

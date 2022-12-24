@@ -49,12 +49,38 @@ class LeagueSerializer(serializers.ModelSerializer):
     fields = ['id', 'name', 'is_public', 'competition', 'competition_name', 'owner_username']
     read_only_fields = ['id', 'name', 'is_public', 'competition_name', 'owner_username']
 
+
 class ParticipantSerializer(serializers.ModelSerializer):
   league = LeagueSerializer(read_only=True)
   user = UserSerializer(read_only=True)
+
   class Meta:
     model = models.Participant
     fields = ['id', 'score', 'user', 'league']
+
+class ParticipantWithoutLeagueSerializer(serializers.ModelSerializer):
+  user = UserSerializer(read_only=True)
+
+  class Meta:
+    model = models.Participant
+    fields = ['id', 'score', 'user']
+
+class LeagueDetailSerializer(serializers.ModelSerializer):
+  competition = serializers.PrimaryKeyRelatedField(read_only=True, many=False)
+  competition_name = serializers.StringRelatedField(read_only=True, source='competition.name')
+  owner_username = serializers.StringRelatedField(read_only=True, source='owner.username')
+  participants = serializers.SerializerMethodField()
+
+  class Meta:
+    depth = 1
+    model = models.League
+    fields = ['id', 'name', 'is_public', 'competition', 'competition_name', 'owner_username', 'participants']
+    read_only_fields = ['id', 'name', 'is_public', 'competition_name', 'owner_username', 'participants']
+
+  def get_participants(self, instance):
+    participants = instance.participant_set.order_by('score').all()
+    return ParticipantWithoutLeagueSerializer(participants, many=True).data
+
 
 class FinishMatchSerializer(serializers.ModelSerializer):
   team_a_score = serializers.CharField(allow_blank=False, min_length=1, max_length=2, required=True)
