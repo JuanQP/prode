@@ -78,7 +78,7 @@ class LeagueDetailSerializer(serializers.ModelSerializer):
     read_only_fields = ['id', 'name', 'is_public', 'competition_name', 'owner_username', 'participants']
 
   def get_participants(self, instance):
-    participants = instance.participant_set.order_by('score').all()
+    participants = instance.participant_set.order_by('-score').all()
     return ParticipantWithoutLeagueSerializer(participants, many=True).data
 
 

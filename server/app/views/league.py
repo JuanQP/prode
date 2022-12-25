@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
@@ -16,7 +17,7 @@ class LeagueViewSet(
     """
     queryset = models.League.objects.all()
     serializer_class = serializers.LeagueSerializer
-    public_actions = ['retrieve', 'list', 'can_join']
+    public_actions = ['retrieve', 'list', 'can_join', 'next_matches', 'matches']
 
     def get_serializer_class(self):
         if self.action == 'add_prediction':
@@ -88,3 +89,28 @@ class LeagueViewSet(
             'is_participant': is_participant,
             'message': message
         })
+
+    @action(detail=True, methods=['get'])
+    def next_matches(self, request, pk=None):
+        league = self.get_object()
+        matches = league.competition.match_set.filter(datetime__gte=timezone.now())
+        serializer = serializers.MatchSerializer(matches, many=True)
+
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def matches(self, request, pk=None):
+        league = self.get_object()
+        matches = league.competition.match_set.all()
+        serializer = serializers.MatchSerializer(matches, many=True)
+
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def my_predictions(self, request, pk=None):
+        league = self.get_object()
+        user = self.request.user
+        predictions = models.Participant.objects.filter(user=user, league=league).first().prediction_set.all()
+        serializer = serializers.PredictionSerializer(predictions, many=True)
+
+        return Response(serializer.data)

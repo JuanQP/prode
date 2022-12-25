@@ -1,7 +1,8 @@
-import { ScrollArea, Sx, Table } from "@mantine/core";
+import { ScrollArea, Sx, Table, useMantineTheme } from "@mantine/core";
 
 interface Props {
   participants: Participant[];
+  highlightedParticipantId?: number;
 }
 
 const tdStyle: React.CSSProperties = {
@@ -38,6 +39,13 @@ const scrollAreaStyles = {
 
 export function ParticipantList(props: Props) {
 
+  const { colors } = useMantineTheme()
+
+  const tdHighlightedStyle: React.CSSProperties = {
+    ...tdStyle,
+    backgroundColor: colors.orange[2],
+  }
+
   return (
     <ScrollArea styles={scrollAreaStyles}>
       <Table withColumnBorders sx={tableStyles}>
@@ -51,9 +59,15 @@ export function ParticipantList(props: Props) {
         <tbody>
           {props.participants.map((participant, index) => (
             <tr key={participant.id}>
-              <td style={tdStyle}>{index+1}</td>
-              <td style={tdStyle}>{participant.user.username}</td>
-              <td style={tdStyle}>{participant.score}</td>
+              <td style={props.highlightedParticipantId === participant.user.id ? tdHighlightedStyle : tdStyle}>
+                {index+1}
+              </td>
+              <td style={props.highlightedParticipantId === participant.user.id ? tdHighlightedStyle : tdStyle}>
+                {participant.user.username}
+              </td>
+              <td style={props.highlightedParticipantId === participant.user.id ? tdHighlightedStyle : tdStyle}>
+                {participant.score}
+              </td>
             </tr>
           ))}
         </tbody>

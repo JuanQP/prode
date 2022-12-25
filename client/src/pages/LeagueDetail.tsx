@@ -1,15 +1,16 @@
 import { ParticipantList } from "@/features/Leagues/ParticipantList";
 import { createJoinRequest, getCanJoin, getLeague } from "@/helpers/leaguesApi";
 import { Button, Container, Flex, Loader, Text, Title } from "@mantine/core";
-import { IconPlus, IconUserPlus } from "@tabler/icons";
+import { IconQuestionMark, IconUserPlus } from "@tabler/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useIsAuthenticated } from "react-auth-kit";
-import { Navigate, useParams } from "react-router-dom";
+import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
+import { Link, Navigate, useParams } from "react-router-dom";
 
 export function LeagueDetail() {
 
   const { id } = useParams()
   const isAuth = useIsAuthenticated()
+  const authData = useAuthUser()
   const queryClient = useQueryClient()
 
   if(!id) {
@@ -19,18 +20,14 @@ export function LeagueDetail() {
   const { isError, isLoading, data: league } = useQuery(["leagues", id], {
     queryFn: () => getLeague(id),
   })
-  const { data: joinRequest } = useQuery(["leagues", id, "can_join"], {
+  const { isLoading: joinRequestsAreLoading, data: joinRequest } = useQuery(["leagues", id, "can_join"], {
     queryFn: () => getCanJoin(id),
   })
   const mutation = useMutation({ mutationFn: createJoinRequest })
 
-  function handleAddPredictionClick() {
-    console.log("New prediction")
-  }
-
   async function handleJoinRequestClick() {
     try {
-      const response = await mutation.mutateAsync(id!)
+      await mutation.mutateAsync(id!)
     } catch (error) {
       console.error(error)
     } finally {
@@ -40,7 +37,7 @@ export function LeagueDetail() {
     }
   }
 
-  if(isLoading) return <Loader />
+  if(isLoading || joinRequestsAreLoading) return <Loader />
   if(isError) return <Text color="red">Ocurrió un error</Text>
 
   return (
@@ -49,11 +46,12 @@ export function LeagueDetail() {
       <Title my="sm" order={3} color="dimmed">{league.competition_name}</Title>
       <Flex gap="sm">
         <Button
+          component={Link}
           disabled={!isAuth() || !joinRequest?.is_participant}
-          leftIcon={<IconPlus />}
-          onClick={handleAddPredictionClick}
+          leftIcon={<IconQuestionMark />}
+          to={`/leagues/${id}/predictions`}
         >
-          Predicción
+          Predicciones
         </Button>
         {(league.is_public || joinRequest?.is_participant) && isAuth() ? null : (
           <Button
@@ -70,7 +68,10 @@ export function LeagueDetail() {
         {!joinRequest?.can_join && joinRequest?.message}
       </Text>
       <Title order={3}>Clasificación</Title>
-      <ParticipantList participants={league.participants} />
+      <ParticipantList
+        highlightedParticipantId={authData()?.user.id}
+        participants={league.participants}
+      />
     </Container>
   )
 }

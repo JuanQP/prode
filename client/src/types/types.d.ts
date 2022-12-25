@@ -70,3 +70,17 @@ type DecodedJWT = {
   user_id: number;
   user: User;
 }
+
+type AddPredictionData = {
+  match: number;
+  team_a_score: string;
+  team_b_score: string;
+}
+
+type Prediction = {
+  id: number;
+  match: Match;
+  participant: Participant;
+  team_a_score: string;
+  team_b_score: string;
+}

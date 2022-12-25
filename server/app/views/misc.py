@@ -76,6 +76,6 @@ class ParticipantViewSet(
 
     @action(detail=False, methods=['get'])
     def ranking(self, request):
-        qs = models.Participant.objects.order_by('score')[:10]
+        qs = models.Participant.objects.order_by('-score')[:10]
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
