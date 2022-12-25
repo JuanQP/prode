@@ -16,6 +16,7 @@ class LeagueViewSet(
     """
     queryset = models.League.objects.all()
     serializer_class = serializers.LeagueSerializer
+    public_actions = ['retrieve', 'list', 'can_join']
 
     def get_serializer_class(self):
         if self.action == 'add_prediction':
@@ -64,3 +65,26 @@ class LeagueViewSet(
         # Whether league is public or private
         prediction_serializer.save(participant=participant, match=match)
         return Response(prediction_serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def can_join(self, request, pk=None):
+        user = self.request.user
+        league = self.get_object()
+
+        if not user.is_authenticated:
+            return Response({'can_join': False, 'is_participant': False, 'message': 'Tenés que estar logueado.'})
+
+        is_participant = league.participant_set.filter(user=user).exists()
+        has_pending_join_request = league.joinrequest_set.filter(user=user, accepted__isnull=True).exists()
+        message = 'Podés unirte'
+
+        if has_pending_join_request:
+            message = 'Tenés una solicitud para unirte pendiente.'
+        if is_participant:
+            message = 'Ya estás participando en esta liga.'
+
+        return Response({
+            'can_join': not has_pending_join_request and not is_participant,
+            'is_participant': is_participant,
+            'message': message
+        })
