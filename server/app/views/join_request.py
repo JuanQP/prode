@@ -56,6 +56,6 @@ class JoinRequestViewSet(
             raise PermissionDenied({'message': 'This join request has already been answered.'})
         # Accepted request
         if serializer.validated_data['accepted']:
-            join_request.league.participants.add(user)
+            join_request.league.participants.add(join_request.user)
 
         return super().perform_update(serializer)
