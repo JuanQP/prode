@@ -37,7 +37,6 @@ export function LoginForm(props: Props) {
           />
         <PasswordInput
           label="Contraseña"
-          type="password"
           error={errors.password?.message}
           {...register('password')}
         />
