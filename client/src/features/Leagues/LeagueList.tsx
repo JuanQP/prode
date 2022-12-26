@@ -2,6 +2,7 @@ import { Anchor, Badge, ScrollArea, Sx, Table } from "@mantine/core";
 import { Link } from "react-router-dom";
 
 interface Props {
+  showCompetitionName?: boolean;
   leagues: League[];
 }
 
@@ -37,7 +38,7 @@ const scrollAreaStyles = {
   }
 }
 
-export function LeagueList(props: Props) {
+export function LeagueList({ leagues, showCompetitionName = false }: Props) {
 
   return (
     <ScrollArea styles={scrollAreaStyles}>
@@ -46,11 +47,12 @@ export function LeagueList(props: Props) {
           <tr>
             <th style={tdStyle}>Nombre</th>
             <th style={tdStyle}>Creador</th>
+            {!showCompetitionName ? null : <th style={tdStyle}>Competición</th>}
             <th style={tdStyle}>Pública / Privada</th>
           </tr>
         </thead>
         <tbody>
-          {props.leagues.map(league => (
+          {leagues.map(league => (
             <tr key={league.id}>
               <td style={tdStyle}>
                 <Anchor underline component={Link} to={`/leagues/${league.id}/`}>
@@ -58,6 +60,9 @@ export function LeagueList(props: Props) {
                 </Anchor>
               </td>
               <td style={tdStyle}>{league.owner_username}</td>
+              {!showCompetitionName ? null : (
+                <td style={tdStyle}>{league.competition_name}</td>
+              )}
               <td style={tdStyle}>
                 <Badge variant="filled" color={league.is_public ? 'green' : 'gray'}>
                   {league.is_public ? 'Pública' : 'Privada'}

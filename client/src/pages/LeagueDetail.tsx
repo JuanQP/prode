@@ -47,7 +47,7 @@ export function LeagueDetail() {
       <Flex gap="sm">
         <Button
           component={Link}
-          disabled={!isAuth() || !joinRequest?.is_participant}
+          disabled={!isAuth() || (!league.is_public && !joinRequest?.is_participant)}
           leftIcon={<IconQuestionMark />}
           to={`/leagues/${id}/predictions`}
         >

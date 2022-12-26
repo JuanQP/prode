@@ -65,7 +65,7 @@ export function Home() {
                 <Text align="center">👌 Sumá más puntos acertando también los goles</Text>
                 <Text align="center">🏆 ¡Coronate campeón de las ligas!</Text>
                 <Flex gap="sm" justify="center">
-                  <Button color="grape" component={Link} to="#">Ligas</Button>
+                  <Button color="grape" component={Link} to="/leagues">Ligas</Button>
                   <Button color="grape" component={Link} to="/competitions">Competiciones</Button>
                 </Flex>
               </Stack>

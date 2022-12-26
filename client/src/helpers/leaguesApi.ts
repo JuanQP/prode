@@ -51,3 +51,8 @@ export async function addPrediction(id: string, prediction: AddPredictionData) {
   const response = await axios.post<AddPredictionResponse>(`/api/leagues/${id}/add_prediction/`, prediction)
   return response.data
 }
+
+export async function getLeagues() {
+  const response = await axios.get<League[]>(`/api/leagues/`)
+  return response.data
+}

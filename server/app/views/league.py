@@ -110,7 +110,13 @@ class LeagueViewSet(
     def my_predictions(self, request, pk=None):
         league = self.get_object()
         user = self.request.user
-        predictions = models.Participant.objects.filter(user=user, league=league).first().prediction_set.all()
+        participant = models.Participant.objects.filter(user=user, league=league).first()
+        if participant is None and league.is_public:
+            return Response([])
+        elif participant is None and not league.is_public:
+            return Response({'message': 'No sos parte de esta liga'}, status=status.HTTP_403_FORBIDDEN)
+
+        predictions = participant.prediction_set.all()
         serializer = serializers.PredictionSerializer(predictions, many=True)
 
         return Response(serializer.data)

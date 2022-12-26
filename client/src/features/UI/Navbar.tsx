@@ -1,5 +1,5 @@
 import { navbarLinks, navigationLinks } from "@/helpers/links";
-import { Anchor, Box, Burger, Container, Group, MediaQuery, Sx } from "@mantine/core";
+import { Anchor, Box, Burger, Container, Flex, Group, MediaQuery, Sx } from "@mantine/core";
 import { useState } from "react";
 import { useIsAuthenticated } from "react-auth-kit";
 import { Link } from "react-router-dom";
@@ -31,11 +31,11 @@ export function Navbar() {
             {navbarLinks[0].label}
           </Anchor>
           <MediaQuery smallerThan="md" styles={{ display: 'none' }}>
-            <Box>
+            <Flex gap="md">
               {navigationLinks.map(link => (
                 <Anchor key={link.label} variant="text" component={Link} to={link.to}>{link.label}</Anchor>
               ))}
-            </Box>
+            </Flex>
           </MediaQuery>
           {isAuth() ? null : LoginButton}
         </Group>

@@ -11,6 +11,7 @@ import { Predictions } from "@pages/Predictions";
 import { Register } from "@pages/Register";
 import { RegisterOk } from "@pages/RegisterOk";
 import { createBrowserRouter } from "react-router-dom";
+import { Leagues } from "./pages/Leagues";
 import { MyParticipations } from "./pages/MyParticipations";
 
 export const router = createBrowserRouter([
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
       {
         path: '/competitions/:id',
         element: <CompetitionDetail />,
+      },
+      {
+        path: '/leagues',
+        element: <Leagues />,
       },
       {
         path: '/leagues/:id',
