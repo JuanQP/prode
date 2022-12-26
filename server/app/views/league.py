@@ -28,6 +28,11 @@ class LeagueViewSet(
             return serializers.LeagueCreateUpdateSerializer
         return super().get_serializer_class()
 
+    def perform_create(self, serializer):
+        user = self.request.user
+        serializer.save(owner=user)
+        return super().perform_create(serializer)
+
     def perform_update(self, serializer):
         league = self.get_object()
         user = self.request.user

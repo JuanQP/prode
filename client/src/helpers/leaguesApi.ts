@@ -1,5 +1,11 @@
 import axios from "axios";
 
+export type CreateLeagueData = Pick<League, "name" | "is_public" | "competition">
+
+type CreateLeagueResponse = CreateLeagueData & {
+  id: number;
+}
+
 export type PendingJoinRequestResponse = {
   can_join: boolean;
   is_participant: boolean;
@@ -54,5 +60,10 @@ export async function addPrediction(id: string, prediction: AddPredictionData) {
 
 export async function getLeagues() {
   const response = await axios.get<League[]>(`/api/leagues/`)
+  return response.data
+}
+
+export async function createLeague(values: CreateLeagueData) {
+  const response = await axios.post<CreateLeagueResponse>(`/api/leagues/`, values)
   return response.data
 }

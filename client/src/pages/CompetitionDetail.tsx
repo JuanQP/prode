@@ -1,9 +1,9 @@
 import { LeagueList } from "@/features/Leagues/LeagueList";
 import { MatchList } from "@/features/Matches/MatchList";
 import { getCompetition } from "@/helpers/competitionsApi";
-import { Center, Container, Loader, Stack, Sx, Text, Title } from "@mantine/core";
+import { Button, Center, Container, Flex, Loader, Stack, Sx, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 
 const centerStyle: Sx = {
   minHeight: 155,
@@ -34,6 +34,11 @@ export function CompetitionDetail() {
           <Title align="center" order={2}>Partidos</Title>
           <MatchList matches={competition.matches} />
           <Title align="center" order={2}>Ligas</Title>
+          <Flex justify="center">
+            <Button component={Link} to={`/leagues/create?competition=${id}`}>
+              Crear liga
+            </Button>
+          </Flex>
           <LeagueList leagues={competition.leagues} />
         </Stack>
       </Container>

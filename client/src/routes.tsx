@@ -11,6 +11,7 @@ import { Predictions } from "@pages/Predictions";
 import { Register } from "@pages/Register";
 import { RegisterOk } from "@pages/RegisterOk";
 import { createBrowserRouter } from "react-router-dom";
+import { CreateLeague } from "./pages/CreateLeague";
 import { Leagues } from "./pages/Leagues";
 import { MyParticipations } from "./pages/MyParticipations";
 
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: '/leagues/:id/add-prediction',
         element: <AddPrediction />,
+      },
+      {
+        path: '/leagues/create',
+        element: <CreateLeague />,
       },
       {
         path: '/predictions/:id',

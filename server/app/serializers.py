@@ -33,11 +33,10 @@ class CompetitionSerializer(serializers.ModelSerializer):
 
 class LeagueCreateUpdateSerializer(serializers.ModelSerializer):
   competition = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Competition.objects.all())
-  participants = serializers.PrimaryKeyRelatedField(many=True, queryset=models.CustomUser.objects.all())
 
   class Meta:
     model = models.League
-    fields = ['id', 'name', 'is_public', 'competition', 'participants']
+    fields = ['id', 'name', 'is_public', 'competition']
 
 class LeagueSerializer(serializers.ModelSerializer):
   competition = serializers.PrimaryKeyRelatedField(read_only=True, many=False)
