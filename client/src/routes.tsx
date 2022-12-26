@@ -11,6 +11,7 @@ import { Predictions } from "@pages/Predictions";
 import { Register } from "@pages/Register";
 import { RegisterOk } from "@pages/RegisterOk";
 import { createBrowserRouter } from "react-router-dom";
+import { MyParticipations } from "./pages/MyParticipations";
 
 export const router = createBrowserRouter([
   // App Layout routes
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: '/predictions/:id',
         element: <PredictionDetail />,
+      },
+      {
+        path: '/my-participations',
+        element: <MyParticipations />,
       },
     ]
   },

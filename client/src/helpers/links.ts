@@ -1,8 +1,8 @@
 import { DefaultMantineColor } from "@mantine/core";
-import { IconHome, IconLogin, IconTrophy, IconUserPlus, TablerIcon } from "@tabler/icons";
+import { IconHome, IconLogin, IconTournament, IconTrophy, IconUserPlus, TablerIcon } from "@tabler/icons";
 
 export interface NavbarLink {
-  id: "home" | "competitions" | "login" | "register" | "logout";
+  id: "home" | "competitions" | "login" | "register" | "logout" | "my-participations";
   label: string;
   to: string;
   Icon: TablerIcon;
@@ -27,7 +27,9 @@ export const notLoggedInLinks: Array<NavbarLink> = [
   { id: "register", label: "Registrarse", to: '/register', Icon: IconUserPlus },
 ]
 
-export const loggedInLinks: Array<NavbarLink> = []
+export const loggedInLinks: Array<NavbarLink> = [
+  { id: "my-participations", label: "Mis Participaciones", to: '/my-participations', Icon: IconTournament },
+]
 
 export const logoutLink: NavbarLink =
   { id: "logout", label: "Cerrar sesión", to: '#', Icon: IconLogin, color: "red" }

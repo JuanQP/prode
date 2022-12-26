@@ -64,8 +64,7 @@ class TeamViewSet(
     serializer_class = serializers.TeamSerializer
 
 class ParticipantViewSet(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
+    appMixins.PublicListAndRetrieveAuthenticatedEverythingElse,
     viewsets.GenericViewSet,
 ):
     """
@@ -73,9 +72,17 @@ class ParticipantViewSet(
     """
     queryset = models.Participant.objects.all()
     serializer_class = serializers.ParticipantSerializer
+    public_actions = ['retrieve', 'list', 'ranking']
 
     @action(detail=False, methods=['get'])
     def ranking(self, request):
         qs = models.Participant.objects.order_by('-score')[:10]
+        serializer = self.get_serializer(qs, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def my_participations(self, request):
+        user = self.request.user
+        qs = models.Participant.objects.filter(user__id=user.id).all()
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
