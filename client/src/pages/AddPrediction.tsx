@@ -3,7 +3,6 @@ import { getError } from "@/helpers/getError";
 import { addPrediction, getLeague, getLeagueNextMatches } from "@/helpers/leaguesApi";
 import { Alert, Container, Loader, Text, Title } from "@mantine/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useIsAuthenticated } from "react-auth-kit";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 interface AddPrediction {
@@ -14,10 +13,9 @@ interface AddPrediction {
 export function AddPrediction() {
 
   const { id } = useParams()
-  const isAuth = useIsAuthenticated()
   const navigate = useNavigate()
 
-  if(!id || !isAuth()) {
+  if(!id) {
     return <Navigate to={`/competitions/`} />
   }
 

@@ -4,7 +4,6 @@ import { getLeagueMatches } from "@/helpers/leaguesApi";
 import { getPrediction, updatePrediction } from "@/helpers/predictionsApi";
 import { Alert, Container, Loader, Text, Title } from "@mantine/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useIsAuthenticated } from "react-auth-kit";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 
 interface UpdatePrediction {
@@ -15,10 +14,9 @@ interface UpdatePrediction {
 export function PredictionDetail() {
 
   const { id } = useParams()
-  const isAuth = useIsAuthenticated()
   const navigate = useNavigate()
 
-  if(!id || !isAuth()) {
+  if(!id) {
     return <Navigate to={`/competitions/`} />
   }
 

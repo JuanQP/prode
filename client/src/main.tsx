@@ -21,14 +21,14 @@ if(token) {
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
-      <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider authType='localstorage' authName='_auth' refresh={api.refreshApi}>
+    <AuthProvider authType='localstorage' authName='_auth' refresh={api.refreshApi}>
+      <MantineProvider theme={theme} withGlobalStyles withNormalizeCSS>
+        <HelmetProvider>
+          <QueryClientProvider client={queryClient}>
             <RouterProvider router={router} />
-          </AuthProvider>
-        </QueryClientProvider>
-      </HelmetProvider>
-    </MantineProvider>
+          </QueryClientProvider>
+        </HelmetProvider>
+      </MantineProvider>
+    </AuthProvider>
   </React.StrictMode>,
 )

@@ -1,18 +1,19 @@
 import loginImage from "@/assets/login.svg";
 import * as api from '@/helpers/api';
 import { LoginData, LoginForm } from "@features/UI/LoginForm";
-import { Button, Card, Grid, Group, Image, Title } from "@mantine/core";
+import { Button, Card, Grid, Group, Image, Text, Title } from "@mantine/core";
 import { useMutation } from '@tanstack/react-query';
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { useIsAuthenticated, useSignIn } from "react-auth-kit";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 
 export function Login() {
   const signIn = useSignIn()
-  const navigate = useNavigate()
   const isAuth = useIsAuthenticated()
   const mutation = useMutation({ mutationFn: api.login })
+  const location = useLocation()
+  const redirectUrl: string | undefined = location.state?.from?.pathname
 
   async function handleLoginSubmit(credentials: LoginData) {
     try {
@@ -29,14 +30,13 @@ export function Login() {
         },
       })
       axios.defaults.headers.common['Authorization'] = `Bearer ${response.access}`
-      navigate('/')
     } catch (error) {
       console.error(error)
     }
   }
 
   if(isAuth()) {
-    return <Navigate to="/" />
+    return <Navigate to={redirectUrl ?? '/'} />
   }
 
   return (
@@ -47,6 +47,9 @@ export function Login() {
         </Grid.Col>
         <Grid.Col xs={12} md={6}>
           <Title>Ingresar a Prode</Title>
+          {!redirectUrl ? null : (
+            <Text color="dimmed">Redirigiendo a {redirectUrl}</Text>
+          )}
           <LoginForm loading={mutation.isLoading} onSubmit={handleLoginSubmit}/>
           <Group grow mt="sm">
             <Button component={Link} variant='subtle' to="/">

@@ -3,15 +3,13 @@ import { getLeague, getLeaguePredictions } from "@/helpers/leaguesApi";
 import { Button, Container, Flex, Loader, Text, Title } from "@mantine/core";
 import { IconPlus } from "@tabler/icons";
 import { useQuery } from "@tanstack/react-query";
-import { useIsAuthenticated } from "react-auth-kit";
 import { Link, Navigate, useParams } from "react-router-dom";
 
 export function Predictions() {
 
   const { id } = useParams()
-  const isAuth = useIsAuthenticated()
 
-  if(!id || !isAuth()) {
+  if(!id) {
     return <Navigate to="/" />
   }
 

@@ -4,18 +4,12 @@ import { getError } from "@/helpers/getError";
 import { createLeague, CreateLeagueData } from "@/helpers/leaguesApi";
 import { Alert, Container, Loader, Text, Title } from "@mantine/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useIsAuthenticated } from "react-auth-kit";
-import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export function CreateLeague() {
 
   const [params] = useSearchParams()
-  const isAuth = useIsAuthenticated()
   const navigate = useNavigate()
-
-  if(!isAuth()) {
-    return <Navigate to={`/competitions/`} />
-  }
 
   const { isError, isLoading, data: competitions } = useQuery(["competitions"], {
     queryFn: getCompetitions,

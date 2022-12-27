@@ -16,7 +16,8 @@ import { Predictions } from "@pages/Predictions";
 import { Register } from "@pages/Register";
 import { RegisterOk } from "@pages/RegisterOk";
 import { UpdateLeague } from "@pages/UpdateLeague";
-import { createBrowserRouter } from "react-router-dom";
+import { RequireAuth } from "react-auth-kit";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 
 export const router = createBrowserRouter([
   // App Layout routes
@@ -43,37 +44,47 @@ export const router = createBrowserRouter([
         path: '/leagues/:id',
         element: <LeagueDetail />,
       },
+      // Login required routes
       {
-        path: '/leagues/:id/predictions',
-        element: <Predictions />,
-      },
-      {
-        path: '/leagues/:id/add-prediction',
-        element: <AddPrediction />,
-      },
-      {
-        path: '/leagues/create',
-        element: <CreateLeague />,
-      },
-      {
-        path: '/predictions/:id',
-        element: <PredictionDetail />,
-      },
-      {
-        path: '/my-participations',
-        element: <MyParticipations />,
-      },
-      {
-        path: '/my-leagues',
-        element: <MyLeagues />,
-      },
-      {
-        path: '/my-leagues/:id',
-        element: <MyLeagueDetail />,
-      },
-      {
-        path: '/leagues/update/:id',
-        element: <UpdateLeague />,
+        element: (
+          <RequireAuth loginPath="/login">
+            <Outlet />
+          </RequireAuth>
+        ),
+        children: [
+          {
+            path: '/leagues/:id/predictions',
+            element: <Predictions />,
+          },
+          {
+            path: '/leagues/:id/add-prediction',
+            element: <AddPrediction />,
+          },
+          {
+            path: '/leagues/create',
+            element: <CreateLeague />,
+          },
+          {
+            path: '/predictions/:id',
+            element: <PredictionDetail />,
+          },
+          {
+            path: '/my-participations',
+            element: <MyParticipations />,
+          },
+          {
+            path: '/my-leagues',
+            element: <MyLeagues />,
+          },
+          {
+            path: '/my-leagues/:id',
+            element: <MyLeagueDetail />,
+          },
+          {
+            path: '/leagues/update/:id',
+            element: <UpdateLeague />,
+          },
+        ]
       },
     ]
   },
