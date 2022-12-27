@@ -29,6 +29,15 @@ export type AddPredictionResponse = AddPredictionData & {
   id: number;
 }
 
+export interface PaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  currentPage: number;
+  pages: number;
+  results: T[];
+}
+
 export async function getLeague(id: string) {
   const response = await axios.get<LeagueDetail>(`/api/leagues/${id}/`)
   return response.data
@@ -86,5 +95,12 @@ export async function getMyLeagues() {
 
 export async function getMyLeague(id: string) {
   const response = await axios.get<MyLeague>(`/api/leagues/${id}/my_league/`)
+  return response.data
+}
+
+export async function searchLeagues(search?: string, page?: number) {
+  const response = await axios.get<PaginatedResponse<League>>(`/api/leagues-search/`, {
+    params: { search, page },
+  })
   return response.data
 }

@@ -20,4 +20,5 @@ urlpatterns = [
     path('logged/', views.Authenticated.as_view()),
     path('admin/', views.AdminAuthenticated.as_view()),
     path('register/', views.RegisterView.as_view(), name='auth_register'),
+    path('leagues-search/', views.LeagueListView.as_view(), name='league-search')
 ] + apiRouter.urls

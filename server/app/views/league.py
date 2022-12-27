@@ -1,5 +1,5 @@
 from django.utils import timezone
-from rest_framework import status, viewsets
+from rest_framework import filters, generics, pagination, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
@@ -151,3 +151,24 @@ class LeagueViewSet(
             raise PermissionDenied({'message': 'This League is not yours.'})
 
         return Response(serializer.data)
+
+class LeagueSearchPagination(pagination.PageNumberPagination):
+    page_size = 10
+    page_query_param = 'page'
+
+    def get_paginated_response(self, data):
+        return Response({
+            'count': self.page.paginator.count,
+            'next': self.get_next_link(),
+            'previous': self.get_previous_link(),
+            'currentPage': self.page.number,
+            'pages': self.page.paginator.num_pages,
+            'results': data,
+        })
+
+class LeagueListView(generics.ListAPIView):
+    queryset = models.League.objects.order_by('-id').all()
+    serializer_class = serializers.LeagueSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'competition__name']
+    pagination_class = LeagueSearchPagination

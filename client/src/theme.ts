@@ -77,6 +77,16 @@ export const theme: MantineThemeOverride = {
         }
       }
     },
+    Pagination: {
+      styles: {
+        item: {
+          borderWidth: '2px',
+          borderColor: 'black',
+          borderStyle: 'solid',
+          boxShadow: '2px 2px black',
+        }
+      }
+    },
     PasswordInput: {
       styles: {
         input: {

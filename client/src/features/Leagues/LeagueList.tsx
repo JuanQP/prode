@@ -1,7 +1,7 @@
-import { Anchor, Badge, Indicator, ScrollArea, Sx, Table } from "@mantine/core";
+import { Anchor, Badge, Indicator, ScrollArea, ScrollAreaStylesParams, Styles, Sx, Table } from "@mantine/core";
 import { Link } from "react-router-dom";
 
-interface Props {
+export interface Props {
   urlBase?: "/leagues" | "/my-leagues";
   showCompetitionName?: boolean;
   showRequests?: boolean;
@@ -31,12 +31,12 @@ const tableStyles: Sx = (theme) => ({
   },
 })
 
-const scrollAreaStyles = {
+const scrollAreaStyles: Styles<"root" | "viewport" | "scrollbar" | "thumb" | "corner", ScrollAreaStylesParams> = {
   root: {
     height: '100%',
   },
   viewport: {
-    padding: 8,
+    padding: "8px 4px 8px 0px",
   }
 }
 
