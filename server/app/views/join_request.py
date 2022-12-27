@@ -20,7 +20,7 @@ class JoinRequestViewSet(
     def get_queryset(self):
         user = self.request.user
         if not user.is_staff:
-            return self.queryset.filter(user=user)
+            return self.queryset.filter(league__owner=user)
         return super().get_queryset()
 
     def get_serializer_class(self):

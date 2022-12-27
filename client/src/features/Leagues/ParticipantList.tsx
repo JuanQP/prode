@@ -1,4 +1,4 @@
-import { ScrollArea, Sx, Table, useMantineTheme } from "@mantine/core";
+import { ScrollArea, Sx, Table, Text, useMantineTheme } from "@mantine/core";
 
 interface Props {
   participants: Participant[];
@@ -57,6 +57,15 @@ export function ParticipantList(props: Props) {
           </tr>
         </thead>
         <tbody>
+          {props.participants.length !== 0 ? null : (
+            <tr>
+              <td colSpan={3}>
+                <Text m="xs" align="center" color="dimmed">
+                  Esta lista está vacía...
+                </Text>
+              </td>
+            </tr>
+          )}
           {props.participants.map((participant, index) => (
             <tr key={participant.id}>
               <td style={props.highlightedParticipantId === participant.user.id ? tdHighlightedStyle : tdStyle}>

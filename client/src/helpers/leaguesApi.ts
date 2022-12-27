@@ -6,6 +6,12 @@ type CreateLeagueResponse = CreateLeagueData & {
   id: number;
 }
 
+export type UpdateLeagueData = Pick<League, "name">
+
+type UpdateLeagueResponse = UpdateLeagueData & {
+  id: number;
+}
+
 export type PendingJoinRequestResponse = {
   can_join: boolean;
   is_participant: boolean;
@@ -65,5 +71,20 @@ export async function getLeagues() {
 
 export async function createLeague(values: CreateLeagueData) {
   const response = await axios.post<CreateLeagueResponse>(`/api/leagues/`, values)
+  return response.data
+}
+
+export async function updateLeague(id: string, values: UpdateLeagueData) {
+  const response = await axios.patch<UpdateLeagueResponse>(`/api/leagues/${id}/`, values)
+  return response.data
+}
+
+export async function getMyLeagues() {
+  const response = await axios.get<MyLeague[]>(`/api/leagues/my_leagues/`)
+  return response.data
+}
+
+export async function getMyLeague(id: string) {
+  const response = await axios.get<MyLeague>(`/api/leagues/${id}/my_league/`)
   return response.data
 }

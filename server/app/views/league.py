@@ -24,8 +24,12 @@ class LeagueViewSet(
             return serializers.PredictionCreateSerializer
         elif self.action == 'retrieve':
             return serializers.LeagueDetailSerializer
-        elif self.action in ['create', 'update', 'partial_update']:
-            return serializers.LeagueCreateUpdateSerializer
+        elif self.action == 'create':
+            return serializers.LeagueCreateSerializer
+        elif self.action in ['update', 'partial_update']:
+            return serializers.LeagueUpdateSerializer
+        elif self.action in ['my_leagues', 'my_league']:
+            return serializers.MyLeagueSerializer
         return super().get_serializer_class()
 
     def perform_create(self, serializer):
@@ -36,13 +40,14 @@ class LeagueViewSet(
     def perform_update(self, serializer):
         league = self.get_object()
         user = self.request.user
-        if not self.request.user.is_staff and not league.participants.filter(id=user.id).exists():
+        if not self.request.user.is_staff and league.owner.id != user.id:
             raise PermissionDenied({'message': 'This League is not yours.'})
         return super().perform_update(serializer)
 
     def perform_destroy(self, instance):
+        league = self.get_object()
         user = self.request.user
-        if not self.request.user.is_staff and not instance.participants.filter(id=user.id).exists():
+        if not self.request.user.is_staff and league.owner.id != user.id:
             raise PermissionDenied({'message': 'This League is not yours.'})
         return super().perform_destroy(instance)
 
@@ -123,5 +128,26 @@ class LeagueViewSet(
 
         predictions = participant.prediction_set.all()
         serializer = serializers.PredictionSerializer(predictions, many=True)
+
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def my_leagues(self, request, pk=None):
+        """Returns users created leagues with their join requests."""
+        user = self.request.user
+        leagues = models.League.objects.filter(owner=user).all()
+        serializer = self.get_serializer(leagues, many=True)
+
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def my_league(self, request, pk=None):
+        """Returns users created leagues with their join requests."""
+        user = self.request.user
+        league = self.get_object()
+        serializer = self.get_serializer(league)
+
+        if not self.request.user.is_staff and league.owner.id != user.id:
+            raise PermissionDenied({'message': 'This League is not yours.'})
 
         return Response(serializer.data)

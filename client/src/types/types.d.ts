@@ -14,8 +14,23 @@ type League = {
   owner_username: string;
 }
 
+type JoinRequest = {
+  id: number;
+  user: User;
+  league: League;
+  accepted: boolean | null;
+}
+
+type AnsweredJoinRequest = JoinRequest & {
+  accepted: boolean;
+}
+
 type LeagueDetail = League & {
   participants: Participant[];
+}
+
+type MyLeague = LeagueDetail & {
+  join_requests: JoinRequest[]
 }
 
 type Team = {

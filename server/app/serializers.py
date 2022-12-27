@@ -31,12 +31,17 @@ class CompetitionSerializer(serializers.ModelSerializer):
   def get_league_count(self, obj):
     return obj.league_set.count()
 
-class LeagueCreateUpdateSerializer(serializers.ModelSerializer):
+class LeagueCreateSerializer(serializers.ModelSerializer):
   competition = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Competition.objects.all())
 
   class Meta:
     model = models.League
     fields = ['id', 'name', 'is_public', 'competition']
+
+class LeagueUpdateSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = models.League
+    fields = ['id', 'name']
 
 class LeagueSerializer(serializers.ModelSerializer):
   competition = serializers.PrimaryKeyRelatedField(read_only=True, many=False)
@@ -200,8 +205,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class JoinRequestSerializer(serializers.ModelSerializer):
-  user = serializers.PrimaryKeyRelatedField(many=False, queryset=models.CustomUser.objects.all())
-  league = serializers.PrimaryKeyRelatedField(many=False, queryset=models.League.objects.all())
+  user = UserSerializer()
+  league = LeagueSerializer()
   class Meta:
     model = models.JoinRequest
     fields = [
@@ -228,6 +233,22 @@ class JoinRequestUpdateSerializer(serializers.ModelSerializer):
       'accepted'
     ]
 
+
+class MyLeagueSerializer(serializers.ModelSerializer):
+  competition = serializers.PrimaryKeyRelatedField(read_only=True, many=False)
+  competition_name = serializers.StringRelatedField(read_only=True, source='competition.name')
+  owner_username = serializers.StringRelatedField(read_only=True, source='owner.username')
+  join_requests = JoinRequestSerializer(many=True, source='joinrequest_set')
+  participants = serializers.SerializerMethodField()
+
+  class Meta:
+    model = models.League
+    fields = ['id', 'name', 'is_public', 'competition', 'competition_name', 'owner_username', 'join_requests', 'participants']
+    read_only_fields = ['id', 'name', 'is_public', 'competition_name', 'owner_username', 'join_requests', 'participants']
+
+  def get_participants(self, instance):
+    participants = instance.participant_set.order_by('-score').all()
+    return ParticipantWithoutLeagueSerializer(participants, many=True).data
 
 # DRF Simple JWT Login with Email
 # https://stackoverflow.com/a/67256983/4792093

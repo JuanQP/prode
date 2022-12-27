@@ -3,17 +3,20 @@ import { LoginLayout } from "@features/UI/LoginLayout";
 import { AddPrediction } from "@pages/AddPrediction";
 import { CompetitionDetail } from "@pages/CompetitionDetail";
 import { Competitions } from "@pages/Competitions";
+import { CreateLeague } from "@pages/CreateLeague";
 import { Home } from "@pages/Home";
 import { LeagueDetail } from "@pages/LeagueDetail";
+import { Leagues } from "@pages/Leagues";
 import { Login } from "@pages/Login";
+import { MyLeagueDetail } from "@pages/MyLeagueDetail";
+import { MyLeagues } from "@pages/MyLeagues";
+import { MyParticipations } from "@pages/MyParticipations";
 import { PredictionDetail } from "@pages/PredictionDetail";
 import { Predictions } from "@pages/Predictions";
 import { Register } from "@pages/Register";
 import { RegisterOk } from "@pages/RegisterOk";
+import { UpdateLeague } from "@pages/UpdateLeague";
 import { createBrowserRouter } from "react-router-dom";
-import { CreateLeague } from "./pages/CreateLeague";
-import { Leagues } from "./pages/Leagues";
-import { MyParticipations } from "./pages/MyParticipations";
 
 export const router = createBrowserRouter([
   // App Layout routes
@@ -59,6 +62,18 @@ export const router = createBrowserRouter([
       {
         path: '/my-participations',
         element: <MyParticipations />,
+      },
+      {
+        path: '/my-leagues',
+        element: <MyLeagues />,
+      },
+      {
+        path: '/my-leagues/:id',
+        element: <MyLeagueDetail />,
+      },
+      {
+        path: '/leagues/update/:id',
+        element: <UpdateLeague />,
       },
     ]
   },

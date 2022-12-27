@@ -1,9 +1,11 @@
-import { Anchor, Badge, ScrollArea, Sx, Table } from "@mantine/core";
+import { Anchor, Badge, Indicator, ScrollArea, Sx, Table } from "@mantine/core";
 import { Link } from "react-router-dom";
 
 interface Props {
+  urlBase?: "/leagues" | "/my-leagues";
   showCompetitionName?: boolean;
-  leagues: League[];
+  showRequests?: boolean;
+  leagues: League[] | MyLeague[];
 }
 
 const tdStyle: React.CSSProperties = {
@@ -38,7 +40,18 @@ const scrollAreaStyles = {
   }
 }
 
-export function LeagueList({ leagues, showCompetitionName = false }: Props) {
+function isMyLeague(league: unknown): league is MyLeague {
+  if(typeof league === "object" && league !== null) {
+    return Object.hasOwn(league, 'join_requests')
+  }
+  return false
+}
+
+export function LeagueList({ urlBase = '/leagues', leagues, showCompetitionName = false, showRequests = false }: Props) {
+
+  function countUnansweredRequests(league: MyLeague) {
+    return league.join_requests.filter(jr => jr.accepted === null).length
+  }
 
   return (
     <ScrollArea styles={scrollAreaStyles}>
@@ -55,9 +68,26 @@ export function LeagueList({ leagues, showCompetitionName = false }: Props) {
           {leagues.map(league => (
             <tr key={league.id}>
               <td style={tdStyle}>
-                <Anchor underline component={Link} to={`/leagues/${league.id}/`}>
-                  {league.name}
-                </Anchor>
+                {!showRequests ? (
+                  <Anchor underline component={Link} to={`${urlBase}/${league.id}/`}>
+                    {league.name}
+                  </Anchor>
+                ) : (
+                  <Anchor underline component={Link} to={`${urlBase}/${league.id}/`}>
+                    <Indicator
+                      styles={{ indicator: { boxShadow: '2px 2px black' } }}
+                      m="xs"
+                      p="xs"
+                      inline
+                      size={16}
+                      showZero={false}
+                      dot={false}
+                      label={isMyLeague(league) ? countUnansweredRequests(league) : 0}
+                    >
+                      {league.name}
+                    </Indicator>
+                  </Anchor>
+                )}
               </td>
               <td style={tdStyle}>{league.owner_username}</td>
               {!showCompetitionName ? null : (

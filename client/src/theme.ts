@@ -16,6 +16,16 @@ export const theme: MantineThemeOverride = {
         }
       }
     },
+    Badge: {
+      styles: {
+        root: {
+          borderWidth: '2px',
+          borderColor: 'black',
+          borderStyle: 'solid',
+          boxShadow: '2px 2px black',
+        }
+      }
+    },
     Burger: {
       styles: {
         root: {
@@ -48,6 +58,16 @@ export const theme: MantineThemeOverride = {
       }
     },
     ThemeIcon: {
+      styles: {
+        root: {
+          borderWidth: '2px',
+          borderColor: 'black',
+          borderStyle: 'solid',
+          boxShadow: '2px 2px black',
+        }
+      }
+    },
+    ActionIcon: {
       styles: {
         root: {
           borderWidth: '2px',

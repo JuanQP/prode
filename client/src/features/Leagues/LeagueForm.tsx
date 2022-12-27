@@ -54,6 +54,7 @@ export function LeagueForm(props: Props) {
           {...register('name')}
         />
         <Checkbox
+          disabled={props.editing || props.disabled}
           label="Liga pública"
           {...register('is_public')}
         />
