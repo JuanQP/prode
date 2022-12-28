@@ -13,6 +13,12 @@ class UserSerializer(serializers.ModelSerializer):
     fields = ['id', 'username', 'avatar']
     read_only_fields = ['id', 'username', 'avatar']
 
+class UserDetailSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = models.CustomUser
+    fields = ('id', 'username', 'email', 'first_name', 'last_name', 'avatar')
+    read_only_fields = ['id', 'username', 'email']
+
 class TeamSerializer(serializers.ModelSerializer):
   class Meta:
     model = models.Team
@@ -261,3 +267,17 @@ class EmailTokenObtainSerializer(TokenObtainPairSerializer):
     token['user'] = UserSerializer(user).data
 
     return token
+
+class ChangePasswordSerializer(serializers.ModelSerializer):
+  password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+  password2 = serializers.CharField(write_only=True, required=True)
+
+  class Meta:
+    model = models.CustomUser
+    fields = ('password', 'password2')
+
+  def validate(self, attrs):
+    if attrs['password'] != attrs['password2']:
+      raise serializers.ValidationError({"password": "Password fields didn't match."})
+
+    return attrs

@@ -17,9 +17,15 @@ export default defineConfig({
       '/api': {
         // This will work with docker container
         target: 'http://django:8000/',
-        changeOrigin: true,
+        changeOrigin: false,
         secure: false,
-      }
+      },
+      '/media': {
+        // This will work with docker container
+        target: 'http://django:8000/',
+        changeOrigin: false,
+        secure: false,
+      },
     }
   }
 })

@@ -18,6 +18,7 @@ import { RegisterOk } from "@pages/RegisterOk";
 import { UpdateLeague } from "@pages/UpdateLeague";
 import { RequireAuth } from "react-auth-kit";
 import { createBrowserRouter, Outlet } from "react-router-dom";
+import { Profile } from "./pages/Profile";
 
 export const router = createBrowserRouter([
   // App Layout routes
@@ -83,6 +84,10 @@ export const router = createBrowserRouter([
           {
             path: '/leagues/update/:id',
             element: <UpdateLeague />,
+          },
+          {
+            path: '/profile',
+            element: <Profile />,
           },
         ]
       },

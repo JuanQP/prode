@@ -1,4 +1,4 @@
-from rest_framework import generics, mixins, viewsets
+from rest_framework import exceptions, generics, mixins, viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
@@ -86,3 +86,45 @@ class ParticipantViewSet(
         qs = models.Participant.objects.filter(user__id=user.id).all()
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
+
+class UserViewSet(
+    appMixins.PublicListAndRetrieveAuthenticatedEverythingElse,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = models.CustomUser.objects.all()
+    serializer_class = serializers.UserSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'me':
+            return serializers.UserDetailSerializer
+        elif self.action == 'change_password':
+            return serializers.ChangePasswordSerializer
+        return super().get_serializer_class()
+
+    @action(detail=False, methods=['get', 'put', 'patch'])
+    def me(self, request):
+        user = self.request.user
+        if self.request.method.lower() in ['put', 'patch']:
+            serializer = self.get_serializer(user, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
+
+        serializer = self.get_serializer(self.request.user)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def change_password(self, request, pk=None):
+        user = self.request.user
+        if not user.is_staff and user.id != pk:
+            raise exceptions.PermissionDenied({'message': 'No tenés permisos'})
+
+        serializer = self.get_serializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user.set_password(serializer.validated_data['password'])
+        user.save()
+
+        return Response({'message': 'Password was changed'})

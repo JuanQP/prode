@@ -67,7 +67,7 @@ type CompetitionDetail = {
 type User = {
   id: number;
   username: string;
-  avatar: string;
+  avatar: string | null;
 }
 
 type Participant = {

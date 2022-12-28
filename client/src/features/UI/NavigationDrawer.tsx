@@ -1,7 +1,8 @@
 import { drawerLinks, loggedInLinks, logoutLink, notLoggedInLinks } from "@/helpers/links";
-import { Drawer, DrawerStylesNames, Stack, Styles, Text } from "@mantine/core";
+import { Drawer, DrawerStylesNames, Flex, Stack, Styles, Text } from "@mantine/core";
 import axios from "axios";
 import { useAuthUser, useIsAuthenticated, useSignOut } from "react-auth-kit";
+import { Avatar } from "./Avatar";
 import { DrawerLink } from "./DrawerLink";
 
 interface Props {
@@ -25,6 +26,7 @@ export function NavigationDrawer(props: Props) {
   const logout = useSignOut()
   const auth = useAuthUser()
   const username = auth()?.user.username || 'visitante'
+  const avatar = auth()?.user.avatar || null
 
   function handleLogout() {
     logout()
@@ -41,6 +43,9 @@ export function NavigationDrawer(props: Props) {
       onClose={props.onClose}
     >
       <Stack>
+        <Flex justify="center">
+          <Avatar withPlaceholder src={avatar} width={100} height={100} radius={50} />
+        </Flex>
         <Text align="center">
           Hola, <Text span fw="bold">{username}</Text>! 👋
         </Text>
