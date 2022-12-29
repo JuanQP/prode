@@ -28,6 +28,7 @@ import { RegisterOk } from "@pages/RegisterOk";
 import { UpdateLeague } from "@pages/UpdateLeague";
 import { RequireAuth } from "react-auth-kit";
 import { createBrowserRouter, Outlet } from "react-router-dom";
+import { AdminTeamFileUpload } from "./pages/AdminTeamFileUpload";
 
 export const router = createBrowserRouter([
   // App Layout routes
@@ -121,6 +122,14 @@ export const router = createBrowserRouter([
         element: (
           <RequireAuth loginPath="/">
             <AdminTeamCreate />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: '/admin/teams/file-upload',
+        element: (
+          <RequireAuth loginPath="/">
+            <AdminTeamFileUpload />
           </RequireAuth>
         ),
       },

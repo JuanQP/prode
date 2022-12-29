@@ -1,3 +1,7 @@
+from csv import DictReader
+from io import TextIOWrapper
+
+from django.db import transaction
 from rest_framework import exceptions, generics, mixins, viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
@@ -62,6 +66,17 @@ class TeamViewSet(
     """
     queryset = models.Team.objects.all()
     serializer_class = serializers.TeamSerializer
+
+    @action(detail=False, methods=['post'])
+    def csv_upload(self, request):
+        teams_file = request.FILES["file"]
+        rows = TextIOWrapper(teams_file, encoding="utf-8", newline="")
+        with transaction.atomic():
+            for row in DictReader(rows):
+                serializer = self.get_serializer(data=row, many=False)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+        return Response({'message': f"Se cargaron correctamente todos los equipos."})
 
 class ParticipantViewSet(
     appMixins.PublicListAndRetrieveAuthenticatedEverythingElse,

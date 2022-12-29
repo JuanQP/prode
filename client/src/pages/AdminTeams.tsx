@@ -1,7 +1,7 @@
 import { AdminGenericList } from "@/features/UI/AdminGenericList";
 import { deleteTeam, getTeams } from "@/helpers/teamsApi";
 import { Button, Container, Flex, Loader, Stack, Text, Title } from "@mantine/core";
-import { IconPlus } from "@tabler/icons";
+import { IconFileUpload, IconPlus } from "@tabler/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
@@ -34,15 +34,18 @@ export function AdminTeams(props: Props) {
       <Stack>
         <Title>Equipos</Title>
         <Text color="dimmed">Todos los equipos de fútbol</Text>
-        <Flex>
+        <Flex gap="sm">
           <Button component={Link} to="/admin/teams/create" color="green" leftIcon={<IconPlus />}>
             Nuevo
+          </Button>
+          <Button component={Link} to="/admin/teams/file-upload" color="green" leftIcon={<IconFileUpload />}>
+            Importar equipos
           </Button>
         </Flex>
         <AdminGenericList
           idField="id"
-          headers={["Nombre", "Nombre corto"]}
-          columns={["name", "short_name"]}
+          headers={["ID", "Nombre", "Nombre corto"]}
+          columns={["id", "name", "short_name"]}
           route="/admin/teams"
           items={teams}
           onDelete={handleDelete}

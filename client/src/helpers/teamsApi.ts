@@ -26,3 +26,11 @@ export async function deleteTeam(id: string) {
   await axios.delete<Team>(`/api/teams/${id}/`)
   return { message: 'Deleted' }
 }
+
+export async function uploadFile(file: File) {
+  const formData = new FormData()
+  formData.append("file", file)
+
+  const response = await axios.post<{message: string}>("/api/teams/csv_upload/", formData)
+  return response.data
+}
