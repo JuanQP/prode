@@ -3,7 +3,6 @@ import * as api from '@/helpers/api';
 import { LoginData, LoginForm } from "@features/UI/LoginForm";
 import { Button, Card, Grid, Group, Image, Text, Title } from "@mantine/core";
 import { useMutation } from '@tanstack/react-query';
-import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { useIsAuthenticated, useSignIn } from "react-auth-kit";
 import { Link, Navigate, useLocation } from "react-router-dom";
@@ -29,7 +28,6 @@ export function Login() {
           user: decodedJwt.user,
         },
       })
-      axios.defaults.headers.common['Authorization'] = `Bearer ${response.access}`
     } catch (error) {
       console.error(error)
     }

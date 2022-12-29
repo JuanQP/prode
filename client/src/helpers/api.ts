@@ -44,7 +44,6 @@ export const refreshApi = createRefresh({
     try {
       if(!param.refreshToken) throw new Error("No refresh token given")
       const response = await refreshToken(param.refreshToken)
-      axios.defaults.headers.common['Authorization'] = `Bearer ${response.access}`
       return {
         isSuccess: true,
         newAuthToken: response.access,

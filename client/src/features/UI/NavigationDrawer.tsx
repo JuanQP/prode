@@ -1,6 +1,5 @@
 import { adminLinks, drawerLinks, loggedInLinks, logoutLink, notLoggedInLinks } from "@/helpers/links";
 import { Drawer, DrawerStylesNames, Flex, Stack, Styles, Text } from "@mantine/core";
-import axios from "axios";
 import { useAuthUser, useIsAuthenticated, useSignOut } from "react-auth-kit";
 import { Avatar } from "./Avatar";
 import { DrawerLink } from "./DrawerLink";
@@ -31,7 +30,6 @@ export function NavigationDrawer(props: Props) {
 
   function handleLogout() {
     logout()
-    axios.defaults.headers.common['Authorization'] = ""
     props.onLinkClick()
   }
 
