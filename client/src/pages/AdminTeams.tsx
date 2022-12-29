@@ -1,7 +1,7 @@
 import { AdminGenericList } from "@/features/UI/AdminGenericList";
 import { deleteTeam, getTeams } from "@/helpers/teamsApi";
 import { Button, Container, Flex, Loader, Stack, Text, Title } from "@mantine/core";
-import { IconFileUpload, IconPlus } from "@tabler/icons";
+import { IconArrowBack, IconFileUpload, IconPlus } from "@tabler/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
@@ -40,6 +40,9 @@ export function AdminTeams(props: Props) {
           </Button>
           <Button component={Link} to="/admin/teams/file-upload" color="green" leftIcon={<IconFileUpload />}>
             Importar equipos
+          </Button>
+          <Button component={Link} to="/admin/" leftIcon={<IconArrowBack />}>
+            Admin
           </Button>
         </Flex>
         <AdminGenericList

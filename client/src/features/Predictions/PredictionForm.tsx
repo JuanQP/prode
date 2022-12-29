@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Flex, NativeSelect, Stack, TextInput } from "@mantine/core";
-import { IconSend } from "@tabler/icons";
+import { Box, Button, Flex, Group, NativeSelect, Stack, TextInput } from "@mantine/core";
+import { IconDeviceFloppy } from "@tabler/icons";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -45,7 +45,7 @@ export function PredictionForm(props: Props) {
           error={errors.match?.message}
           {...register('match', { valueAsNumber: true })}
         />
-        <Flex gap="sm">
+        <Group grow spacing="sm">
           <TextInput
             readOnly={props.disabled}
             withAsterisk
@@ -66,10 +66,12 @@ export function PredictionForm(props: Props) {
             error={errors.team_b_score?.message}
             {...register('team_b_score')}
           />
+        </Group>
+        <Flex justify="end">
+          <Button color="green" disabled={props.disabled} loading={props.loading} type="submit" leftIcon={<IconDeviceFloppy />}>
+            Guardar
+          </Button>
         </Flex>
-        <Button disabled={props.disabled} loading={props.loading} type="submit" leftIcon={<IconSend />}>
-          Enviar
-        </Button>
       </Stack>
     </Box>
   )

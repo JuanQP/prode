@@ -2,7 +2,7 @@ import { LeagueForm } from "@/features/Leagues/LeagueForm";
 import { getCompetitions } from "@/helpers/competitionsApi";
 import { getError } from "@/helpers/getError";
 import { createLeague, CreateLeagueData } from "@/helpers/leaguesApi";
-import { Alert, Container, Loader, Text, Title } from "@mantine/core";
+import { Alert, Container, Loader, Stack, Text, Title } from "@mantine/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -37,19 +37,21 @@ export function CreateLeague() {
 
   return (
     <Container pt="md">
-      <Title>Nueva liga</Title>
-      <LeagueForm
-        editing={false}
-        initialValues={initialValues}
-        competitions={competitions}
-        loading={mutation.isLoading}
-        onSubmit={handlePredictionSubmit}
-      />
-      {!mutation.isError ? null : (
-        <Alert title="Ups!" color="red">
-          {getError(mutation.error).message}
-        </Alert>
-      )}
+      <Stack>
+        <Title>Nueva liga</Title>
+        <LeagueForm
+          editing={false}
+          initialValues={initialValues}
+          competitions={competitions}
+          loading={mutation.isLoading}
+          onSubmit={handlePredictionSubmit}
+        />
+        {!mutation.isError ? null : (
+          <Alert title="Ups!" color="red">
+            {getError(mutation.error).message}
+          </Alert>
+        )}
+      </Stack>
     </Container>
   )
 }

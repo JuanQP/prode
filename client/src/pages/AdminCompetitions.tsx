@@ -1,7 +1,7 @@
 import { AdminGenericList } from "@/features/UI/AdminGenericList";
 import { deleteCompetition, getCompetitions } from "@/helpers/competitionsApi";
 import { Button, Container, Flex, Loader, Stack, Text, Title } from "@mantine/core";
-import { IconPlus } from "@tabler/icons";
+import { IconArrowBack, IconPlus } from "@tabler/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
@@ -30,9 +30,12 @@ export function AdminCompetitions() {
       <Stack>
         <Title>Competiciones</Title>
         <Text color="dimmed">Todas las competiciones</Text>
-        <Flex>
+        <Flex gap="sm">
           <Button component={Link} to="/admin/competitions/create" color="green" leftIcon={<IconPlus />}>
             Nuevo
+          </Button>
+          <Button component={Link} to="/admin/" leftIcon={<IconArrowBack />}>
+            Admin
           </Button>
         </Flex>
         <AdminGenericList

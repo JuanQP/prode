@@ -1,8 +1,9 @@
 import { CompetitionForm } from "@/features/Competitions/CompetitionForm";
 import { createCompetition } from "@/helpers/competitionsApi";
-import { Container, Stack, Title } from "@mantine/core";
+import { Button, Container, Flex, Stack, Title } from "@mantine/core";
+import { IconArrowBack } from "@tabler/icons";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function AdminCompetitionCreate() {
 
@@ -21,6 +22,11 @@ export function AdminCompetitionCreate() {
     <Container pt="md">
       <Stack>
         <Title>Crear competición</Title>
+        <Flex>
+          <Button component={Link} to="/admin/competitions" leftIcon={<IconArrowBack />}>
+            Competiciones
+          </Button>
+        </Flex>
         <CompetitionForm
           editing={true}
           loading={mutation.isLoading}

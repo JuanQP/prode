@@ -1,9 +1,10 @@
 import { PredictionForm } from "@/features/Predictions/PredictionForm";
 import { getError } from "@/helpers/getError";
 import { addPrediction, getLeague, getLeagueNextMatches } from "@/helpers/leaguesApi";
-import { Alert, Container, Loader, Text, Title } from "@mantine/core";
+import { Alert, Button, Container, Flex, Loader, Stack, Text, Title } from "@mantine/core";
+import { IconArrowBack } from "@tabler/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
 interface AddPrediction {
   id: string;
@@ -45,20 +46,27 @@ export function AddPrediction() {
 
   return (
     <Container pt="md">
-      <Title>Predicción</Title>
-      <Text>Nueva predicción para {league?.name} ({league?.competition_name})</Text>
-      {matches.length === 0 ? <Text color="cyan">No hay próximos partidos para esta competencia.</Text> : null}
-      <PredictionForm
-        editing={false}
-        matches={matches}
-        loading={mutation.isLoading}
-        onSubmit={handlePredictionSubmit}
-      />
-      {!mutation.isError ? null : (
-        <Alert title="Ups!" color="red">
-          {getError(mutation.error).message}
-        </Alert>
-      )}
+      <Stack>
+        <Title>Predicción</Title>
+        <Flex>
+          <Button component={Link} to={`/leagues/${id}/predictions`} leftIcon={<IconArrowBack />}>
+            Predicciones
+          </Button>
+        </Flex>
+        <Text>Nueva predicción para {league?.name} ({league?.competition_name})</Text>
+        {matches.length === 0 ? <Text color="cyan">No hay próximos partidos para esta competencia.</Text> : null}
+        <PredictionForm
+          editing={false}
+          matches={matches}
+          loading={mutation.isLoading}
+          onSubmit={handlePredictionSubmit}
+        />
+        {!mutation.isError ? null : (
+          <Alert title="Ups!" color="red">
+            {getError(mutation.error).message}
+          </Alert>
+        )}
+      </Stack>
     </Container>
   )
 }

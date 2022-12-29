@@ -1,7 +1,7 @@
 import { ParticipantList } from "@/features/Leagues/ParticipantList";
 import { createJoinRequest, getCanJoin, getLeague } from "@/helpers/leaguesApi";
 import { Button, Container, Flex, Loader, Text, Title } from "@mantine/core";
-import { IconQuestionMark, IconUserPlus } from "@tabler/icons";
+import { IconArrowBack, IconQuestionMark, IconUserPlus } from "@tabler/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
 import { Link, Navigate, useParams } from "react-router-dom";
@@ -63,6 +63,11 @@ export function LeagueDetail() {
             Unirse
           </Button>
         )}
+        <Flex>
+          <Button component={Link} to="/leagues" leftIcon={<IconArrowBack />}>
+            Ligas
+          </Button>
+        </Flex>
       </Flex>
       <Text my="md" color={"dimmed"}>
         {!joinRequest?.can_join && joinRequest?.message}

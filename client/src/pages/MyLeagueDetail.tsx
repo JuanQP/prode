@@ -2,8 +2,8 @@ import { JoinRequestList } from "@/features/Leagues/JoinRequestList";
 import { ParticipantList } from "@/features/Leagues/ParticipantList";
 import { updateJoinRequest, UpdateJoinRequestData } from "@/helpers/joinRequestsApi";
 import { getMyLeague } from "@/helpers/leaguesApi";
-import { Box, Button, Container, Loader, Stack, Text, Title } from "@mantine/core";
-import { IconEdit } from "@tabler/icons";
+import { Box, Button, Container, Flex, Loader, Stack, Text, Title } from "@mantine/core";
+import { IconArrowBack, IconEdit } from "@tabler/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, Navigate, useParams } from "react-router-dom";
 
@@ -42,9 +42,14 @@ export function MyLeagueDetail() {
     <Container pt="md">
       <Stack spacing="xs">
         <Title>{league?.name}</Title>
+        <Flex gap="sm">
+          <Button component={Link} to={`/leagues/update/${id}`} leftIcon={<IconEdit />}>Editar</Button>
+          <Button component={Link} to={`/my-leagues`} leftIcon={<IconArrowBack />}>
+            Mis ligas
+          </Button>
+        </Flex>
         <Box>
           <Title order={3} color="dimmed">{league?.competition_name}</Title>
-          <Button component={Link} to={`/leagues/update/${id}`} leftIcon={<IconEdit />}>Editar</Button>
         </Box>
         <Box>
           <Text>Participantes</Text>

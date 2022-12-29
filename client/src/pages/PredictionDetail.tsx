@@ -2,9 +2,10 @@ import { PredictionForm } from "@/features/Predictions/PredictionForm";
 import { getError } from "@/helpers/getError";
 import { getLeagueMatches } from "@/helpers/leaguesApi";
 import { getPrediction, updatePrediction } from "@/helpers/predictionsApi";
-import { Alert, Container, Loader, Text, Title } from "@mantine/core";
+import { Alert, Button, Container, Flex, Loader, Stack, Text, Title } from "@mantine/core";
+import { IconArrowBack } from "@tabler/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
 interface UpdatePrediction {
   id: string;
@@ -23,9 +24,10 @@ export function PredictionDetail() {
   const { isError, isLoading, data: prediction } = useQuery(["predictions", id], {
     queryFn: () => getPrediction(id),
   })
-  const { isLoading: matchesAreLoading, data: matches } = useQuery(["leagues", id, "matches"], {
-    queryFn: () => getLeagueMatches(id),
+  const { isLoading: matchesAreLoading, data: matches } = useQuery(["predictions", id, "league-matches"], {
+    queryFn: () => getLeagueMatches(String(prediction?.participant.league.id)),
     initialData: [],
+    enabled: !!prediction,
   })
   const mutation = useMutation({
     mutationFn: ({id, data}: UpdatePrediction) => updatePrediction(id, data),
@@ -58,23 +60,30 @@ export function PredictionDetail() {
 
   return (
     <Container pt="md">
-      <Title>Predicción</Title>
-      <Text color="dimmed">
-        Podés editar tu predicción hasta antes de {matchDatetime}
-      </Text>
-      <PredictionForm
-        disabled={!canEdit}
-        editing={true}
-        initialValues={initialValues}
-        matches={matches}
-        loading={mutation.isLoading}
-        onSubmit={handlePredictionSubmit}
-      />
-      {!mutation.isError ? null : (
-        <Alert mt="md" title="Ups!" color="red">
-          {getError(mutation.error).message}
-        </Alert>
-      )}
+      <Stack>
+        <Title>Predicción</Title>
+        <Flex>
+          <Button component={Link} to={`/leagues/${prediction.participant.league.id}/predictions`} leftIcon={<IconArrowBack />}>
+            Predicciones
+          </Button>
+        </Flex>
+        <Text color="dimmed">
+          Podés editar tu predicción hasta antes de {matchDatetime}
+        </Text>
+        <PredictionForm
+          disabled={!canEdit}
+          editing={true}
+          initialValues={initialValues}
+          matches={matches}
+          loading={mutation.isLoading}
+          onSubmit={handlePredictionSubmit}
+        />
+        {!mutation.isError ? null : (
+          <Alert mt="md" title="Ups!" color="red">
+            {getError(mutation.error).message}
+          </Alert>
+        )}
+      </Stack>
     </Container>
   )
 }

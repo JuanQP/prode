@@ -1,7 +1,8 @@
 import { LeagueList } from "@/features/Leagues/LeagueList";
 import { MatchList } from "@/features/Matches/MatchList";
 import { getCompetition } from "@/helpers/competitionsApi";
-import { Button, Center, Container, Flex, Loader, Stack, Sx, Text, Title } from "@mantine/core";
+import { Button, Container, Flex, Loader, Stack, Sx, Text, Title } from "@mantine/core";
+import { IconArrowBack } from "@tabler/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Link, Navigate, useParams } from "react-router-dom";
 
@@ -25,23 +26,24 @@ export function CompetitionDetail() {
   if(isError) return <Text color="red">Ocurrió un error</Text>
 
   return (
-    <>
-      <Center sx={centerStyle}>
-        <Title align="center">{competition.name}</Title>
-      </Center>
-      <Container px={0}>
-        <Stack>
-          <Title align="center" order={2}>Partidos</Title>
-          <MatchList matches={competition.matches} />
-          <Title align="center" order={2}>Ligas</Title>
-          <Flex justify="center">
-            <Button component={Link} to={`/leagues/create?competition=${id}`}>
-              Crear liga
-            </Button>
-          </Flex>
-          <LeagueList leagues={competition.leagues} />
-        </Stack>
-      </Container>
-    </>
+    <Container mt="md">
+      <Stack>
+        <Title>{competition.name}</Title>
+        <Flex>
+          <Button component={Link} to="/competitions" leftIcon={<IconArrowBack />}>
+            Competiciones
+          </Button>
+        </Flex>
+        <Title align="center" order={2}>Partidos</Title>
+        <MatchList matches={competition.matches} />
+        <Title align="center" order={2}>Ligas</Title>
+        <Flex justify="center">
+          <Button component={Link} to={`/leagues/create?competition=${id}`}>
+            Crear liga
+          </Button>
+        </Flex>
+        <LeagueList leagues={competition.leagues} />
+      </Stack>
+    </Container>
   )
 }

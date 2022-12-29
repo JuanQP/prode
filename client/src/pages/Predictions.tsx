@@ -1,7 +1,7 @@
 import { PredictionList } from "@/features/Predictions/PredictionList";
 import { getLeague, getLeaguePredictions } from "@/helpers/leaguesApi";
 import { Button, Container, Flex, Loader, Text, Title } from "@mantine/core";
-import { IconPlus } from "@tabler/icons";
+import { IconArrowBack, IconPlus } from "@tabler/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Link, Navigate, useParams } from "react-router-dom";
 
@@ -35,6 +35,9 @@ export function Predictions() {
           to={`/leagues/${id}/add-prediction`}
         >
           Predicción
+        </Button>
+        <Button component={Link} to={`/leagues/${id}/`} leftIcon={<IconArrowBack />}>
+          Liga
         </Button>
       </Flex>
       <Title mt="sm" order={3}>Tus predicciones</Title>

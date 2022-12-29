@@ -1,8 +1,9 @@
 import { TeamForm } from "@/features/Teams/TeamForm";
 import { getTeam, TeamUpdateValues, updateTeam } from "@/helpers/teamsApi";
-import { Container, Loader, Stack, Title } from "@mantine/core";
+import { Button, Container, Flex, Loader, Stack, Title } from "@mantine/core";
+import { IconArrowBack } from "@tabler/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
 interface MutationParams {
   id: string;
@@ -34,6 +35,11 @@ export function AdminTeamUpdate() {
     <Container pt="md">
       <Stack>
         <Title>Modificar equipo</Title>
+        <Flex>
+          <Button component={Link} to="/admin/teams" leftIcon={<IconArrowBack />}>
+            Equipos
+          </Button>
+        </Flex>
         <TeamForm
           editing={true}
           loading={query.isLoading || mutation.isLoading}

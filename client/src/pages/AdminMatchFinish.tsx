@@ -1,8 +1,9 @@
 import { FinishMatchForm } from "@/features/Matches/FinishMatchForm";
 import { finishMatch, FinishMatchValues, getMatch } from "@/helpers/matchesApi";
-import { Container, Loader, Stack, Text, Title } from "@mantine/core";
+import { Button, Container, Flex, Loader, Stack, Text, Title } from "@mantine/core";
+import { IconArrowBack } from "@tabler/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
 interface MutationParams {
   id: string;
@@ -35,6 +36,11 @@ export function AdminMatchFinish() {
     <Container pt="md">
       <Stack>
         <Title>Finalizar partido</Title>
+        <Flex>
+          <Button component={Link} to={`/admin/competitions/${id}/`} leftIcon={<IconArrowBack />}>
+            Competición
+          </Button>
+        </Flex>
         {match.status !== "Finalizado" ? null : (
           <Text>Este partido está Finalizado y su resultado no puede ser cambiado.</Text>
         )}

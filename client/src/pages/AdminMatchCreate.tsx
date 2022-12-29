@@ -2,9 +2,10 @@ import { MatchForm } from "@/features/Matches/MatchForm";
 import { getCompetitions } from "@/helpers/competitionsApi";
 import { createMatch, MatchUpdateValues } from "@/helpers/matchesApi";
 import { getTeams } from "@/helpers/teamsApi";
-import { Container, Loader, Stack, Title } from "@mantine/core";
+import { Button, Container, Flex, Loader, Stack, Title } from "@mantine/core";
+import { IconArrowBack } from "@tabler/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
 export function AdminMatchCreate() {
 
@@ -39,6 +40,11 @@ export function AdminMatchCreate() {
     <Container pt="md">
       <Stack>
         <Title>Crear partido</Title>
+        <Flex>
+          <Button component={Link} to={`/admin/competitions/${id}/`} leftIcon={<IconArrowBack />}>
+            Competición
+          </Button>
+        </Flex>
         <MatchForm
           competitionId={Number(id)}
           competitions={competitions}

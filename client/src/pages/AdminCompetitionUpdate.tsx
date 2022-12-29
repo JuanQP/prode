@@ -3,7 +3,7 @@ import { AdminGenericList } from "@/features/UI/AdminGenericList";
 import { CompetitionUpdateValues, getCompetition, updateCompetition } from "@/helpers/competitionsApi";
 import { deleteMatch } from "@/helpers/matchesApi";
 import { Button, Container, Flex, Loader, Stack, Title } from "@mantine/core";
-import { IconPlus } from "@tabler/icons";
+import { IconArrowBack, IconPlus } from "@tabler/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
@@ -49,6 +49,11 @@ export function AdminCompetitionUpdate() {
     <Container pt="md">
       <Stack>
         <Title>Modificar competencia</Title>
+        <Flex>
+          <Button component={Link} to="/admin/competitions" leftIcon={<IconArrowBack />}>
+            Competiciones
+          </Button>
+        </Flex>
         <CompetitionForm
           editing={true}
           loading={query.isLoading || mutation.isLoading}

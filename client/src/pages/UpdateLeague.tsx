@@ -2,9 +2,10 @@ import { LeagueForm } from "@/features/Leagues/LeagueForm";
 import { getCompetitions } from "@/helpers/competitionsApi";
 import { getError } from "@/helpers/getError";
 import { CreateLeagueData, getLeague, updateLeague, UpdateLeagueData } from "@/helpers/leaguesApi";
-import { Alert, Container, Loader, Title } from "@mantine/core";
+import { Alert, Button, Container, Flex, Loader, Stack, Title } from "@mantine/core";
+import { IconArrowBack } from "@tabler/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
 export function UpdateLeague() {
 
@@ -36,19 +37,27 @@ export function UpdateLeague() {
 
   return (
     <Container pt="md">
-      <Title>Modificar liga</Title>
-      <LeagueForm
-        editing
-        initialValues={league}
-        loading={mutation.isLoading}
-        competitions={competitions}
-        onSubmit={handleSubmit}
-      />
-      {!mutation.isError ? null : (
-        <Alert title="Ups!" color="red">
-          {getError(mutation.error).message}
-        </Alert>
-      )}
+      <Stack>
+        <Title>Modificar liga</Title>
+        <Flex>
+          <Button component={Link} to={`/my-leagues/${id}`} leftIcon={<IconArrowBack />}>
+            Mis ligas
+          </Button>
+        </Flex>
+        <LeagueForm
+          editing
+          initialValues={league}
+          loading={mutation.isLoading}
+          competitions={competitions}
+          onSubmit={handleSubmit}
+        />
+        {!mutation.isError ? null : (
+          <Alert title="Ups!" color="red">
+            {getError(mutation.error).message}
+          </Alert>
+        )}
+
+      </Stack>
     </Container>
   )
 }

@@ -1,6 +1,6 @@
 import { CreateLeagueData } from "@/helpers/leaguesApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Checkbox, NativeSelect, Stack, TextInput } from "@mantine/core";
+import { Box, Button, Checkbox, Flex, NativeSelect, Stack, TextInput } from "@mantine/core";
 import { IconSend } from "@tabler/icons";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -58,9 +58,11 @@ export function LeagueForm(props: Props) {
           label="Liga pública"
           {...register('is_public')}
         />
-        <Button disabled={props.disabled} loading={props.loading} type="submit" leftIcon={<IconSend />}>
-          Enviar
-        </Button>
+        <Flex justify="end">
+          <Button disabled={props.disabled} loading={props.loading} type="submit" leftIcon={<IconSend />}>
+            Enviar
+          </Button>
+        </Flex>
       </Stack>
     </Box>
   )
