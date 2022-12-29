@@ -3,11 +3,13 @@ import { LoginLayout } from "@features/UI/LoginLayout";
 import { AddPrediction } from "@pages/AddPrediction";
 import { Admin } from "@pages/Admin";
 import { AdminCompetitionCreate } from "@pages/AdminCompetitionCreate";
+import { AdminCompetitionMatchesFileUpload } from "@pages/AdminCompetitionMatchesFileUpload";
 import { AdminCompetitions } from "@pages/AdminCompetitions";
 import { AdminCompetitionUpdate } from "@pages/AdminCompetitionUpdate";
 import { AdminMatchCreate } from "@pages/AdminMatchCreate";
 import { AdminMatchFinish } from "@pages/AdminMatchFinish";
 import { AdminTeamCreate } from "@pages/AdminTeamCreate";
+import { AdminTeamFileUpload } from "@pages/AdminTeamFileUpload";
 import { AdminTeams } from "@pages/AdminTeams";
 import { AdminTeamUpdate } from "@pages/AdminTeamUpdate";
 import { CompetitionDetail } from "@pages/CompetitionDetail";
@@ -28,7 +30,6 @@ import { RegisterOk } from "@pages/RegisterOk";
 import { UpdateLeague } from "@pages/UpdateLeague";
 import { RequireAuth } from "react-auth-kit";
 import { createBrowserRouter, Outlet } from "react-router-dom";
-import { AdminTeamFileUpload } from "./pages/AdminTeamFileUpload";
 
 export const router = createBrowserRouter([
   // App Layout routes
@@ -130,6 +131,14 @@ export const router = createBrowserRouter([
         element: (
           <RequireAuth loginPath="/">
             <AdminTeamFileUpload />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: '/admin/competitions/:id/matches-file-upload',
+        element: (
+          <RequireAuth loginPath="/">
+            <AdminCompetitionMatchesFileUpload />
           </RequireAuth>
         ),
       },

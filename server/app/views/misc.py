@@ -57,6 +57,18 @@ class CompetitionViewSet(
             return serializers.CompetitionDetailSerializer
         return super().get_serializer_class()
 
+    @action(detail=True, methods=['post'])
+    def csv_upload(self, request, pk=None):
+        matches_file = request.FILES["file"]
+        rows = TextIOWrapper(matches_file, encoding="utf-8", newline="")
+        with transaction.atomic():
+            for row in DictReader(rows):
+                row['competition'] = pk
+                serializer = serializers.MatchSerializer(data=row, many=False)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+        return Response({'message': f"Se cargaron correctamente todos los partidos."})
+
 class TeamViewSet(
     appMixins.PublicListAndRetrieveAdminEverythingElse,
     viewsets.ModelViewSet,

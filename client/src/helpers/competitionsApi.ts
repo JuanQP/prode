@@ -29,3 +29,11 @@ export async function deleteCompetition(id: string) {
   await axios.delete<CompetitionResponse>(`/api/competitions/${id}/`)
   return { message: 'Deleted' }
 }
+
+export async function uploadMatchesFile(id: string | number, file: File) {
+  const formData = new FormData()
+  formData.append("file", file)
+
+  const response = await axios.post<{message: string}>(`/api/competitions/${id}/csv_upload/`, formData)
+  return response.data
+}

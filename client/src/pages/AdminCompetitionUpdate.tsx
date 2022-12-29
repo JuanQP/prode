@@ -3,7 +3,7 @@ import { AdminGenericList } from "@/features/UI/AdminGenericList";
 import { CompetitionUpdateValues, getCompetition, updateCompetition } from "@/helpers/competitionsApi";
 import { deleteMatch } from "@/helpers/matchesApi";
 import { Button, Container, Flex, Loader, Stack, Title } from "@mantine/core";
-import { IconArrowBack, IconPlus } from "@tabler/icons";
+import { IconArrowBack, IconFileUpload, IconPlus } from "@tabler/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
@@ -61,9 +61,12 @@ export function AdminCompetitionUpdate() {
           onSubmit={handleSubmit}
         />
         <Title order={3}>Partidos</Title>
-        <Flex>
+        <Flex gap="sm">
           <Button color="green" component={Link} to={`/admin/competitions/${id}/create-match`} leftIcon={<IconPlus />}>
             Crear
+          </Button>
+          <Button component={Link} to={`/admin/competitions/${id}/matches-file-upload`} leftIcon={<IconFileUpload />}>
+            Importar equipos
           </Button>
         </Flex>
         <AdminGenericList
