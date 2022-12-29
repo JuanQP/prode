@@ -1,10 +1,10 @@
 import fans from "@/assets/fans.svg";
 import background from "@/assets/grass.jpg";
-import { NextMatches } from "@/features/Home/NextMatches";
-import { ParticipantsRanking } from "@/features/Home/ParticipantsRanking";
+import { ListWithIcon } from "@/features/Home/ListWithIcon";
 import { getNextMatches } from "@/helpers/matchesApi";
 import { getRanking } from "@/helpers/participantsApi";
 import { Box, Button, Container, Flex, Grid, Image, Loader, Stack, Sx, Text, Title } from "@mantine/core";
+import { IconCalendarEvent, IconUser } from "@tabler/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
@@ -78,12 +78,28 @@ export function Home() {
           <Grid>
             <Grid.Col xs={12} md={6}>
               {areMatchesLoading ? <Loader /> : (
-                <NextMatches matches={matches} />
-              )}
+                <ListWithIcon
+                  idField="id"
+                  items={matches}
+                  iconColor="grape"
+                  title="Próximos partidos"
+                  Icon={IconCalendarEvent}
+                  itemTitle={(match) => `${match.team_a_detail.name} - ${match.team_b_detail.name}`}
+                  itemSubtitle={(match) => (new Date(match.datetime)).toLocaleString()}
+                />
+                )}
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
               {areParticipantsLoading ? <Loader /> : (
-                <ParticipantsRanking participants={participants} />
+                <ListWithIcon
+                  idField="id"
+                  items={participants}
+                  iconColor="pink"
+                  title="Mejores 10 jugadores"
+                  Icon={IconUser}
+                  itemTitle={(participant) => `${participant.user.username} (${participant.score} pts)`}
+                  itemSubtitle={(participant) => participant.league.name}
+                />
               )}
             </Grid.Col>
           </Grid>
