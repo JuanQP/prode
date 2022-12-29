@@ -55,6 +55,7 @@ type Match = {
   stadium: string;
   status: MatchStatus;
   description: string;
+  detail: string;
 }
 
 type CompetitionDetail = {
@@ -83,7 +84,9 @@ type DecodedJWT = {
   iat: number;
   jti: string;
   user_id: number;
-  user: User;
+  user: User & {
+    is_staff: boolean;
+  };
 }
 
 type AddPredictionData = {

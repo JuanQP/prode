@@ -22,6 +22,7 @@ interface MessageResponse {
 
 interface UserResponse extends RegisterResponse {
   id: number;
+  is_staff: boolean;
 }
 
 export interface UserData extends Pick<UserResponse, "first_name"> {

@@ -1,13 +1,17 @@
 import { DefaultMantineColor } from "@mantine/core";
-import { IconEdit, IconHome, IconList, IconLogin, IconTournament, IconTrophy, IconUser, IconUserPlus, TablerIcon } from "@tabler/icons";
+import { IconEdit, IconHome, IconList, IconLock, IconLogin, IconTournament, IconTrophy, IconUser, IconUserPlus, TablerIcon } from "@tabler/icons";
 
 export interface NavbarLink {
-  id: "home" | "competitions" | "login" | "register" | "logout" | "my-participations" | "leagues" | "my-leagues" | "profile";
+  id: "home" | "competitions" | "login" | "register" | "logout" | "my-participations" | "leagues" | "my-leagues" | "profile" | "admin";
   label: string;
   to: string;
   Icon: TablerIcon;
   color?: DefaultMantineColor;
 }
+
+export const adminLinks: Array<NavbarLink> = [
+  { id: "admin", label: "Admin", to: '/admin', Icon: IconLock },
+]
 
 export const navigationLinks: Array<NavbarLink> = [
   { id: "competitions", label: "Competiciones", to: '/competitions', Icon: IconTrophy },

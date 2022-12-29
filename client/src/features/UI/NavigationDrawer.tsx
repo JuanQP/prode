@@ -1,4 +1,4 @@
-import { drawerLinks, loggedInLinks, logoutLink, notLoggedInLinks } from "@/helpers/links";
+import { adminLinks, drawerLinks, loggedInLinks, logoutLink, notLoggedInLinks } from "@/helpers/links";
 import { Drawer, DrawerStylesNames, Flex, Stack, Styles, Text } from "@mantine/core";
 import axios from "axios";
 import { useAuthUser, useIsAuthenticated, useSignOut } from "react-auth-kit";
@@ -27,6 +27,7 @@ export function NavigationDrawer(props: Props) {
   const auth = useAuthUser()
   const username = auth()?.user.username || 'visitante'
   const avatar = auth()?.user.avatar || null
+  const isStaff = auth()?.user.is_staff || false
 
   function handleLogout() {
     logout()
@@ -60,6 +61,10 @@ export function NavigationDrawer(props: Props) {
         {/* Logged in links */}
         {isAuth() && loggedInLinks.map(link => (
           <DrawerLink key={link.id} color={link.color ?? "teal"} link={link} onClick={props.onLinkClick}/>
+        ))}
+        {/* Logged in links */}
+        {isAuth() && isStaff && adminLinks.map(link => (
+          <DrawerLink key={link.id} color="orange" link={link} onClick={props.onLinkClick}/>
         ))}
         {isAuth() && (
           <DrawerLink

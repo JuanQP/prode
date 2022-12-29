@@ -16,8 +16,8 @@ class UserSerializer(serializers.ModelSerializer):
 class UserDetailSerializer(serializers.ModelSerializer):
   class Meta:
     model = models.CustomUser
-    fields = ('id', 'username', 'email', 'first_name', 'last_name', 'avatar')
-    read_only_fields = ['id', 'username', 'email']
+    fields = ('id', 'username', 'email', 'first_name', 'last_name', 'avatar', 'is_staff')
+    read_only_fields = ['id', 'username', 'email', 'is_staff']
 
 class TeamSerializer(serializers.ModelSerializer):
   class Meta:
@@ -109,6 +109,7 @@ class MatchSerializer(serializers.ModelSerializer):
   team_b = serializers.PrimaryKeyRelatedField(many=False, queryset=models.Team.objects.all())
   team_a_detail = TeamSerializer(source='team_a', read_only=True)
   team_b_detail = TeamSerializer(source='team_b', read_only=True)
+  detail = serializers.SerializerMethodField()
 
   class Meta:
     model = models.Match
@@ -125,8 +126,13 @@ class MatchSerializer(serializers.ModelSerializer):
       'stadium',
       'status',
       'description',
+      'detail',
     ]
     depth = 1
+    read_only_fields = ["status"]
+
+  def get_detail(self, instance):
+    return f"{instance.team_a.name} - {instance.team_b.name}"
 
   def validate(self, attrs):
     if attrs['team_a'] == attrs['team_b']:
@@ -265,6 +271,7 @@ class EmailTokenObtainSerializer(TokenObtainPairSerializer):
   def get_token(cls, user):
     token = super().get_token(user)
     token['user'] = UserSerializer(user).data
+    token['user']['is_staff'] = user.is_staff
 
     return token
 

@@ -1,6 +1,15 @@
 import { Layout } from "@features/UI/Layout";
 import { LoginLayout } from "@features/UI/LoginLayout";
 import { AddPrediction } from "@pages/AddPrediction";
+import { Admin } from "@pages/Admin";
+import { AdminCompetitionCreate } from "@pages/AdminCompetitionCreate";
+import { AdminCompetitions } from "@pages/AdminCompetitions";
+import { AdminCompetitionUpdate } from "@pages/AdminCompetitionUpdate";
+import { AdminMatchCreate } from "@pages/AdminMatchCreate";
+import { AdminMatchFinish } from "@pages/AdminMatchFinish";
+import { AdminTeamCreate } from "@pages/AdminTeamCreate";
+import { AdminTeams } from "@pages/AdminTeams";
+import { AdminTeamUpdate } from "@pages/AdminTeamUpdate";
 import { CompetitionDetail } from "@pages/CompetitionDetail";
 import { Competitions } from "@pages/Competitions";
 import { CreateLeague } from "@pages/CreateLeague";
@@ -13,12 +22,12 @@ import { MyLeagues } from "@pages/MyLeagues";
 import { MyParticipations } from "@pages/MyParticipations";
 import { PredictionDetail } from "@pages/PredictionDetail";
 import { Predictions } from "@pages/Predictions";
+import { Profile } from "@pages/Profile";
 import { Register } from "@pages/Register";
 import { RegisterOk } from "@pages/RegisterOk";
 import { UpdateLeague } from "@pages/UpdateLeague";
 import { RequireAuth } from "react-auth-kit";
 import { createBrowserRouter, Outlet } from "react-router-dom";
-import { Profile } from "./pages/Profile";
 
 export const router = createBrowserRouter([
   // App Layout routes
@@ -90,6 +99,78 @@ export const router = createBrowserRouter([
             element: <Profile />,
           },
         ]
+      },
+      {
+        path: '/admin',
+        element: (
+          <RequireAuth loginPath="/">
+            <Admin />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: '/admin/teams',
+        element: (
+          <RequireAuth loginPath="/">
+            <AdminTeams />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: '/admin/teams/create',
+        element: (
+          <RequireAuth loginPath="/">
+            <AdminTeamCreate />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: '/admin/teams/:id',
+        element: (
+          <RequireAuth loginPath="/">
+            <AdminTeamUpdate />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: '/admin/competitions',
+        element: (
+          <RequireAuth loginPath="/">
+            <AdminCompetitions />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: '/admin/competitions/create',
+        element: (
+          <RequireAuth loginPath="/">
+            <AdminCompetitionCreate />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: '/admin/competitions/:id',
+        element: (
+          <RequireAuth loginPath="/">
+            <AdminCompetitionUpdate />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: '/admin/competitions/:id/create-match',
+        element: (
+          <RequireAuth loginPath="/">
+            <AdminMatchCreate />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: '/admin/matches/:id',
+        element: (
+          <RequireAuth loginPath="/">
+            <AdminMatchFinish />
+          </RequireAuth>
+        ),
       },
     ]
   },
