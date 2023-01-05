@@ -1,28 +1,16 @@
 version: '3.9'
 
 services:
-  # Install pipenv and dependencies
-  pipenv:
-    container_name: prode-pipenv
-    image: prode/backend
-    build:
-      dockerfile: ./server/Dockerfile
-      target: installer # "Just run the build until this step"
-    command: pipenv install
-    volumes:
-      - ./server:/app
-
   django:
-    image: prode/backend
-    container_name: prode-server
+    container_name: prode-django
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     ports:
       - 8000:8000
     depends_on:
-      pipenv:
-        condition: service_completed_successfully
       postgres:
         condition: service_started
-    command: pipenv run python manage.py runserver 0:8000
     volumes:
       - ./server:/app
     environment:
@@ -36,7 +24,7 @@ services:
       - PYTHONUNBUFFERED=1
 
   postgres:
-    container_name: prode-db
+    container_name: prode-postgres
     image: postgres:13-alpine
     environment:
       - POSTGRES_USER=postgres
@@ -45,26 +33,15 @@ services:
     ports:
       - "5432:5432"
 
-  # Install frontend dependencies
-  npm:
-    image: node:18-alpine
-    container_name: prode-npm
-    working_dir: /app
-    volumes:
-      - ./client:/app
-    command: npm install
-
   react:
-    container_name: prode-app
-    image: node:18-alpine
-    working_dir: /app
+    container_name: prode-react
+    build:
+      context: ./client
+      dockerfile: Dockerfile
     volumes:
       - ./client:/app
     ports:
       - 5173:5173
     depends_on:
-      npm:
-        condition: service_completed_successfully
       django:
         condition: service_started
-    command: npm run dev -- --host

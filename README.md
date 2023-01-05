@@ -26,7 +26,8 @@ All League's participant users
 ## How to run the project
 
 ```sh
-docker-compose up
+docker compose up
+docker compose exec django /bin/bash -c "pipenv run python manage.py migrate"
 ```
 
 * Backend running on `http://localhost:8000`
