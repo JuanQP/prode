@@ -37,13 +37,15 @@ services:
     container_name: prode-react
     build:
       context: ./client
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     volumes:
-      - ./client:/app
+      - ./client/:/app/
+      - /client/node_modules
     ports:
       - 5173:5173
-    environment:
-      - BACKEND_URL=http://django:8000/
     depends_on:
       django:
         condition: service_started
+    environment:
+      - BACKEND_URL=http://django:8000/
+    command: sh -c "npm install && npm run dev -- --host"
