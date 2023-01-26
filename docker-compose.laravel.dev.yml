@@ -1,0 +1,19 @@
+version: '3.9'
+# This docker-compose was made to run frontend
+# with the Laravel version of the Backend
+services:
+  react:
+    container_name: prode-laravel-react
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./client/:/app/
+      - /client/node_modules
+    ports:
+      - 5174:5173
+    # This is to deploy the container in the same network than host:
+    network_mode: 'host'
+    environment:
+      - BACKEND_URL=http://localhost/
+    command: sh -c "npm install && npm run dev -- --host"
