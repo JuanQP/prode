@@ -37,7 +37,7 @@ export function AdminMatchFinish() {
       <Stack>
         <Title>Finalizar partido</Title>
         <Flex>
-          <Button component={Link} to={`/admin/competitions/${id}/`} leftIcon={<IconArrowBack />}>
+          <Button component={Link} to={`/admin/competitions/${match.competition}/`} leftIcon={<IconArrowBack />}>
             Competición
           </Button>
         </Flex>
