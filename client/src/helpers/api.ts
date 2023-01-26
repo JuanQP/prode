@@ -81,8 +81,11 @@ export async function updateUserInfo(values: Partial<UserData>) {
   const formData = new FormData()
   if(values.first_name) formData.append('first_name', values.first_name)
   if(values.avatar) formData.append('avatar', values.avatar)
+  // Laravel won't work if this is missing
+  // https://laracasts.com/discuss/channels/javascript/axiosajax-http-patch-requests-with-file-not-working
+  formData.append('_method', 'PUT');
 
-  const response = await axios.put<UpdateUserResponse>('/api/users/me/', formData)
+  const response = await axios.post<UpdateUserResponse>('/api/users/me/', formData)
   return response.data
 }
 

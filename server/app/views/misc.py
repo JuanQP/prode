@@ -1,6 +1,8 @@
 from csv import DictReader
 from io import TextIOWrapper
 
+from app import mixins as appMixins
+from app import models, serializers
 from django.db import transaction
 from rest_framework import exceptions, generics, mixins, viewsets
 from rest_framework.decorators import action, api_view
@@ -8,9 +10,6 @@ from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
-
-from app import mixins as appMixins
-from app import models, serializers
 
 
 # DRF SimpleJWT Login
@@ -130,10 +129,10 @@ class UserViewSet(
             return serializers.ChangePasswordSerializer
         return super().get_serializer_class()
 
-    @action(detail=False, methods=['get', 'put', 'patch'])
+    @action(detail=False, methods=['get', 'put', 'patch', 'post'])
     def me(self, request):
         user = self.request.user
-        if self.request.method.lower() in ['put', 'patch']:
+        if self.request.method.lower() in ['put', 'patch', 'post']:
             serializer = self.get_serializer(user, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
