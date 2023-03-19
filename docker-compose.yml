@@ -11,8 +11,6 @@ services:
     depends_on:
       postgres:
         condition: service_started
-    volumes:
-      - ./server:/app
     environment:
       - DEBUG=True
       - SECRET_KEY=prode
@@ -38,8 +36,6 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    volumes:
-      - ./client:/app
     ports:
       - 5173:5173
     environment:

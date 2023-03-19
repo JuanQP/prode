@@ -27,22 +27,23 @@ All League's participant users
 
 ```sh
 docker compose up
+# Open a new terminal and change directory to this folder and execute:
 docker compose exec django /bin/bash -c "pipenv run python manage.py migrate"
 ```
+
+In first place, is necessary an **admin user**. These users can be created by simply using the Django admin panel or by running this command in a new terminal (once the app is running):
+
+```sh
+docker-compose up exec django /bin/sh -c "pipenv run python manage.py createsuperuser"
+```
+
+That's it.
 
 * Backend running on `http://localhost:8000`
 * Frontend running on `http://localhost:5173`
 * PostgreSQL running on `localhost:5432`
 
-That's it.
-
-## How to use this project
-
-In first place, is necessary an **admin user**. These users can be created by simply using the Django admin panel or by running this command (once the app is running):
-
-```sh
-docker-compose up exec django /bin/sh -c "pipenv run python manage.py createsuperuser"
-```
+## About the app
 
 With the recently created Admin user, now you can create `Competition`s and `Team`s. A `Competition` would be for example `FIFA World Cup Qatar 2022`. Then, you can create teams one by one, or by uploading a `.csv` file. These would be for example Argentina, USA, Netherlands, Brazil, etc...
 
