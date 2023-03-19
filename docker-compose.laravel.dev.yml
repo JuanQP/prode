@@ -9,7 +9,6 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./client/:/app/
-      - /client/node_modules
     ports:
       - 5174:5173
     # This is to deploy the container in the same network than host:

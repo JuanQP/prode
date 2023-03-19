@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   django:
-    container_name: prode-django
+    container_name: prode-django-dev
     build:
       context: ./server
       dockerfile: Dockerfile
@@ -24,7 +24,7 @@ services:
       - PYTHONUNBUFFERED=1
 
   postgres:
-    container_name: prode-postgres
+    container_name: prode-postgres-dev
     image: postgres:13-alpine
     environment:
       - POSTGRES_USER=postgres
@@ -34,13 +34,12 @@ services:
       - "5432:5432"
 
   react:
-    container_name: prode-react
+    container_name: prode-react-dev
     build:
       context: ./client
       dockerfile: Dockerfile.dev
     volumes:
       - ./client/:/app/
-      - /client/node_modules
     ports:
       - 5173:5173
     depends_on:

@@ -27,14 +27,14 @@ All League's participant users
 
 ```sh
 docker compose up
-# Open a new terminal and change directory to this folder and execute:
+# Open a new terminal and change directory to this project folder and execute:
 docker compose exec django /bin/bash -c "pipenv run python manage.py migrate"
 ```
 
 In first place, is necessary an **admin user**. These users can be created by simply using the Django admin panel or by running this command in a new terminal (once the app is running):
 
 ```sh
-docker-compose up exec django /bin/sh -c "pipenv run python manage.py createsuperuser"
+docker-compose exec django /bin/sh -c "pipenv run python manage.py createsuperuser"
 ```
 
 That's it.
@@ -58,6 +58,16 @@ Points are given like this:
 * +45 points if user could predict correctly who won
 * +15 points if user could predict the exact amount of goals of one team
 * +30 points if user could predict the exact amount of goals of both teams
+
+# Development
+
+You can run this project with hot-reload if you run this command:
+
+```
+docker compose -f docker-compose.dev.yml up
+```
+
+...instead of the one mentioned in *How to run the project* section.
 
 ## Why?
 
