@@ -1,29 +1,44 @@
 version: '3.9'
 
 services:
-  django:
-    container_name: prode-django
+  backend:
     build:
       context: ./server
-      dockerfile: Dockerfile
-    ports:
-      - 8000:8000
     depends_on:
-      postgres:
+      db:
         condition: service_started
     environment:
-      - DEBUG=True
+      - DEBUG=False
       - SECRET_KEY=prode
       - DATABASE_NAME=prode
-      - DATABASE_HOST=postgres
+      - DATABASE_HOST=db
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=postgres
-      - DATABASE_PORT=
+      - DATABASE_PORT=5432
       - PYTHONUNBUFFERED=1
+    command: >
+      sh -c "pipenv run python manage.py migrate --noinput &&
+      pipenv run python manage.py collectstatic --noinput --clear &&
+      pipenv run gunicorn --bind 0.0.0.0:8000 prode.wsgi"
+    volumes:
+      - static_volume:/app/static # collectstatic folder
+      - media_volume:/app/media # media folder
+    expose:
+      - 8000
 
-  postgres:
-    container_name: prode-postgres
-    image: postgres:13-alpine
+  backend-nginx:
+    build:
+      context: ./server-nginx
+    ports:
+      - 9000:80
+    volumes:
+      - static_volume:/usr/share/nginx/html/static # collectstatic folder
+      - media_volume:/usr/share/nginx/html/media # media folder
+
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - pg_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -31,15 +46,18 @@ services:
     ports:
       - "5432:5432"
 
-  react:
-    container_name: prode-react
+  frontend:
     build:
+      args:
+        - BACKEND_URL=http://localhost:9000
       context: ./client
-      dockerfile: Dockerfile
-    ports:
-      - 5173:5173
-    environment:
-      - BACKEND_URL=http://django:8000/
+    network_mode: "host"
     depends_on:
-      django:
+      backend:
         condition: service_started
+
+volumes:
+  pg_data:
+  # Shared between nginx-backend and backend
+  static_volume:
+  media_volume:

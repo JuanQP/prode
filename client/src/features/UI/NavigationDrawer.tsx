@@ -3,6 +3,7 @@ import { Drawer, DrawerStylesNames, Flex, Stack, Styles, Text } from "@mantine/c
 import { useAuthUser, useIsAuthenticated, useSignOut } from "react-auth-kit";
 import { Avatar } from "./Avatar";
 import { DrawerLink } from "./DrawerLink";
+import { BACKEND_URL } from "@/helpers/constants";
 
 interface Props {
   opened: boolean;
@@ -43,7 +44,13 @@ export function NavigationDrawer(props: Props) {
     >
       <Stack>
         <Flex justify="center">
-          <Avatar withPlaceholder src={avatar} width={100} height={100} radius={50} />
+          <Avatar
+            withPlaceholder
+            src={`${BACKEND_URL}${avatar}`}
+            width={100}
+            height={100}
+            radius={50}
+          />
         </Flex>
         <Text align="center">
           Hola, <Text span fw="bold">{username}</Text>! 👋

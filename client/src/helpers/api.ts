@@ -2,6 +2,7 @@ import { RegisterData } from "@/features/UI/RegisterForm";
 import { LoginData } from "@features/UI/LoginForm";
 import axios from "axios";
 import { createRefresh } from "react-auth-kit";
+import { BACKEND_URL } from "./constants";
 
 interface LoginResponse {
   refresh: string;
@@ -56,24 +57,24 @@ export const refreshApi = createRefresh({
 })
 
 async function refreshToken(refreshToken: string) {
-  const response = await axios.post<MessageResponse>('/api/token/refresh/', {
+  const response = await axios.post<MessageResponse>(`${BACKEND_URL}/api/token/refresh/`, {
     refresh: refreshToken,
   })
   return response.data
 }
 
 export async function login(credentials: LoginData) {
-  const response = await axios.post<LoginResponse>('/api/token/', credentials)
+  const response = await axios.post<LoginResponse>(`${BACKEND_URL}/api/token/`, credentials)
   return response.data
 }
 
 export async function register(values: RegisterData) {
-  const response = await axios.post<RegisterResponse>('/api/register/', values)
+  const response = await axios.post<RegisterResponse>(`${BACKEND_URL}/api/register/`, values)
   return response.data
 }
 
 export async function getCurrentUser() {
-  const response = await axios.get<UserResponse>('/api/users/me/')
+  const response = await axios.get<UserResponse>(`${BACKEND_URL}/api/users/me/`)
   return response.data
 }
 
@@ -85,11 +86,11 @@ export async function updateUserInfo(values: Partial<UserData>) {
   // https://laracasts.com/discuss/channels/javascript/axiosajax-http-patch-requests-with-file-not-working
   formData.append('_method', 'PUT');
 
-  const response = await axios.post<UpdateUserResponse>('/api/users/me/', formData)
+  const response = await axios.post<UpdateUserResponse>(`${BACKEND_URL}/api/users/me/`, formData)
   return response.data
 }
 
 export async function changePassword(id: string, values: ChangePasswordData) {
-  const response = await axios.post<MessageResponse>(`/api/users/${id}/change_password/`, values)
+  const response = await axios.post<MessageResponse>(`${BACKEND_URL}/api/users/${id}/change_password/`, values)
   return response.data
 }

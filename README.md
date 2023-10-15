@@ -1,10 +1,48 @@
 # Prode
 
+## Why?
+
+This very simple implementation of a web-based game that was made for learning purposes. The purpose was to build a web app with the following stack:
+
+* React ⚛️
+  * Vite ⚡
+  * Zod
+  * react-query
+  * Mantine
+  * react-hook-form
+  * react-router
+* TypeScript 🟦
+* Django Rest Framework 🐍
+  * File uploads
+  * JWT
+  * Gunicorn
+* Docker 🐋
+* Nginx 🟩
+
+
 ## Description
 
 *Prode* is a game about trying to predict football match results. Users can play this game by joining to other user's leagues and making their predictions about future matches. If they correctly predict which team will win the game, they earn points.
 
 The word *Prode* comes from spanish "Pronóstico Deportivo" (Sport forecast).
+
+## How to run the project
+
+```sh
+docker compose up
+```
+
+It's necessary an **admin user**. These users can be created by simply using the Django admin panel or by running this command in a new terminal (once the app is running):
+
+```sh
+docker-compose exec backend /bin/sh -c "pipenv run python manage.py createsuperuser"
+```
+
+That's it.
+
+* Backend running on `http://localhost:9000`
+* Frontend running on `http://localhost`
+* PostgreSQL running on `localhost:5432`
 
 ## How the app looks
 
@@ -22,26 +60,6 @@ Logged in as an admin
 
 All League's participant users
 ![Screenshot from 2022-12-30 15-10-29](https://user-images.githubusercontent.com/11776905/210100297-be3eba3c-055e-41cd-98dc-889e559aa4d3.png)
-
-## How to run the project
-
-```sh
-docker compose up
-# Open a new terminal and change directory to this project folder and execute:
-docker compose exec django /bin/bash -c "pipenv run python manage.py migrate"
-```
-
-In first place, is necessary an **admin user**. These users can be created by simply using the Django admin panel or by running this command in a new terminal (once the app is running):
-
-```sh
-docker-compose exec django /bin/sh -c "pipenv run python manage.py createsuperuser"
-```
-
-That's it.
-
-* Backend running on `http://localhost:8000`
-* Frontend running on `http://localhost:5173`
-* PostgreSQL running on `localhost:5432`
 
 ## About the app
 
@@ -61,27 +79,17 @@ Points are given like this:
 
 # Development
 
-You can run this project with hot-reload if you run this command:
+```sh
+# Backend
+cd server
+pipenv install
+pipenv run python manage.py runserver 0:8000
 
+# Frontend
+cd client
+npm install
+npm run dev
+
+# PostgreSQL
+docker compose up db
 ```
-docker compose -f docker-compose.dev.yml up
-```
-
-...instead of the one mentioned in *How to run the project* section.
-
-## Why?
-
-This very simple implementation of a web-based game was made for learning purposes. The purpose was to build a web app with the following stack:
-
-* React
-  * Vite ⚡
-  * Zod
-  * react-query
-  * Mantine
-  * react-hook-form
-  * react-router
-* TypeScript 🟦
-* Django Rest Framework 🐍
-  * File uploads
-  * JWT
-* Docker 🐋
